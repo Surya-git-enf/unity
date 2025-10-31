@@ -5,12 +5,9 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
     public float jumpForce = 8f;
     private Rigidbody2D rb;
-    private bool isGrounded = false;
+    private bool isGrounded;
 
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
+    void Start() => rb = GetComponent<Rigidbody2D>();
 
     void Update()
     {
@@ -24,9 +21,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D c)
     {
-        if (collision.contacts[0].normal.y > 0.5f)
-            isGrounded = true;
+        if (c.contacts[0].normal.y > 0.5f) isGrounded = true;
     }
 }
