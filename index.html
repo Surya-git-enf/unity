@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>SuryaBets — Premier Sports & Casino (Vertical Scroll)</title>
+<title>SuryaBets — Unlock TOSS</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Khand:wght@400;700&display=swap" rel="stylesheet">
 
@@ -12,331 +12,162 @@
   --green1:#00ff6a;
   --green2:#00b33c;
   --bg:#07080b;
-  --glass:rgba(255,255,255,0.04);
+  --glass:rgba(255,255,255,0.05);
   --accent:#ffd700;
-  --card-w:150px;
-  --gap:18px;
+  --white:#ffffff;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  font-family:"Khand",system-ui,Arial;
-  background:linear-gradient(180deg,#0b0c0f 0%,#07080b 100%);
-  color:#fff;
+  font-family:"Khand", system-ui, Arial;
+  background:radial-gradient(circle at top,#0f1115 0%,#050607 100%);
+  color:var(--white);
   overflow-x:hidden;
-  overflow-y:auto;
-  scroll-behavior:smooth;
   -webkit-font-smoothing:antialiased;
+  scroll-behavior:smooth;
 }
 
 /* Header */
 header{
-  display:flex;align-items:center;justify-content:space-between;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   padding:14px 24px;
-  background:linear-gradient(90deg,rgba(0,179,60,0.4),rgba(0,0,0,0.7));
-  position:sticky;top:0;z-index:60;
-  border-bottom:1px solid rgba(255,255,255,0.04);
+  background:rgba(0,179,60,0.12);
+  border-bottom:1px solid rgba(255,255,255,0.05);
   backdrop-filter:blur(10px);
+  position:sticky;top:0;z-index:60;
 }
-.brand{display:flex;align-items:center;gap:12px}
-.brand a{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
-.brand img{width:52px;height:52px;border-radius:15px;object-fit:contain;background:rgba(255,255,255,0.02);padding:6px}
-.brand h1{margin:0;font-size:26px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.brand img{width:50px;height:50px;border-radius:14px;object-fit:contain;background:rgba(255,255,255,0.05);padding:6px}
+.brand h1{margin:0;font-size:26px;letter-spacing:1px}
+
+/* CTA Button in Header */
 .claim-btn{
+  display:inline-flex;align-items:center;gap:10px;
   background:linear-gradient(90deg,var(--green1),var(--green2));
-  color:#04130b;font-weight:800;padding:10px 16px;border-radius:12px;border:none;cursor:pointer;
-  box-shadow:0 8px 30px rgba(0,179,60,0.18);transition:transform .1s;
+  color:#04130b;font-weight:800;padding:10px 18px;
+  border-radius:12px;border:none;cursor:pointer;
+  text-decoration:none;font-size:16px;
+  box-shadow:0 8px 25px rgba(0,255,106,0.2);
+  transition:all .15s;
 }
-.claim-btn:active{transform:translateY(1px)}
+.claim-btn:hover{transform:scale(1.05)}
+.claim-btn svg{width:18px;height:18px;fill:#04130b}
 
-/* Scrollable main content */
+/* Main Content */
 main{
-  display:flex;
-  flex-direction:column;
-  gap:60px;
-  padding:20px 18px 80px;
-  max-width:1200px;
-  margin:0 auto;
-  overflow-y:auto;
+  display:flex;flex-direction:column;gap:28px;
+  padding:40px 18px 100px;
+  max-width:900px;margin:0 auto;text-align:center;
 }
 
-/* Hero */
+/* Hero Section */
 .hero-card{
-  border-radius:16px;
-  overflow:auto;
-  box-shadow:0 20px 50px rgba(250,250,250,0.3);
-}
-.hero-card a img{
-  width:100%;
-  height:auto;
-  display:block;
-  object-fit:cover;
-  max-height:520px;
-}
-
-/* Section */
-.section{margin-top:10px}
-.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.section-head h2{margin:0;font-size:24px;display:flex;align-items:center;gap:10px}
-.section-head .small{font-size:12px;color:#cfeecd}
-
-/* Carousel */
-.ring-wrap{
-  height: calc(var(--card-w) * 1.5 + 30px);
+  border-radius:18px;
   overflow:hidden;
-  position:relative;
-  display:flex;
-  align-items:center;
+  box-shadow:0 10px 40px rgba(0,0,0,0.6);
 }
-.ring-track{
-  display:flex;
-  gap:var(--gap);
-  align-items:center;
-  transition:transform 600ms cubic-bezier(.22,.9,.22,1);
-  will-change:transform;
-  padding:10px 0;
-}
-.ring-card{
-  width:var(--card-w);
-  min-width:var(--card-w);
-  height:calc(var(--card-w)*1);
-  border-radius:12px;
-  background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:10px;text-align:center;
-  transition:transform 300ms,box-shadow 300ms,opacity 300ms;
-}
-.ring-card .icon{font-size:34px}
-.ring-card h3{margin:8px 0 0;font-size:14px}
-.ring-card.active{transform:scale(1.14);box-shadow:0 20px 50px #aaabcd}
-.ring-card.inactive{opacity:0.85;transform:scale(0.92)}
+.hero-card img{width:100%;height:auto;object-fit:cover;display:block}
 
-/* Casino smaller */
-#casino .ring-wrap{height:200px}
-#casino .ring-card{width:130px;height:140px}
-
-/* Bonus button */
-.bonus-container{
+/* CTA Section */
+.cta-box{
+  background:var(--glass);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;
+  padding:28px 20px;
   text-align:center;
-  margin-top:20px;
+  backdrop-filter:blur(12px);
 }
-.bonus-btn{
-  background: linear-gradient(135deg, #ffcc00, #ff9900);
-  color: #000;
-  font-size: 22px;
-  font-weight: bold;
-  border: none;
-  border-radius: 50px;
-  padding: 14px 40px;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(255, 165, 0, 0.5);
-  transition: all 0.3s ease;
-}
-.bonus-btn:hover{
-  transform: scale(1.08);
+.cta-box .lead{
+  font-size:17px;
+  color:#e8fdee;
+  margin-bottom:20px;
 }
 
-/* Modal Styles */
-#bonusModal {
-  display: none;
-  position: fixed;
-  z-index: 100;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(4px);
-  justify-content: center;
-  align-items: center;
+/* Unlock Button */
+.unlock-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  padding:16px 32px;
+  border-radius:50px;
+  background:linear-gradient(135deg,#ffd700,#ff9900);
+  font-weight:800;
+  color:#000;
+  border:none;
+  cursor:pointer;
+  font-size:19px;
+  box-shadow:0 8px 30px rgba(255,165,0,0.25);
+  text-decoration:none;
+  transition:transform .15s, box-shadow .15s;
 }
-#bonusModal .modal-content {
-  background: #111;
-  padding: 30px 40px;
-  border-radius: 16px;
-  text-align: center;
-  color: #fff;
-  box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
-  animation: pop 0.3s ease;
+.unlock-btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(255,165,0,0.4);}
+.unlock-btn svg{width:22px;height:22px;fill:#000}
+
+/* Quotes */
+.quotes{margin-top:20px;color:#c0ffc8;text-align:center}
+.quotes p{margin:6px 0;font-size:15px;opacity:0.95}
+.quote-strong{color:var(--accent);font-weight:700;font-size:16px;margin-bottom:4px}
+
+/* Believe Section */
+.believe-text{
+  font-size:22px;
+  font-weight:700;
+  color:#fff;
+  text-shadow:0 0 20px rgba(255,255,255,0.2);
+  margin-top:10px;
+  letter-spacing:0.8px;
 }
-#bonusModal h2 {
-  color: var(--accent);
-  margin-bottom: 10px;
-}
-#bonusModal p {
-  margin-bottom: 20px;
-}
-#bonusModal button {
-  background: linear-gradient(90deg, var(--green1), var(--green2));
-  border: none;
-  color: #000;
-  font-weight: bold;
-  padding: 10px 25px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-@keyframes pop {
-  0%{transform: scale(0.8);opacity:0}
-  100%{transform: scale(1);opacity:1}
-}
-@media (max-width:920px){
-  :root{--card-w:120px}
+
+@media (max-width:720px){
   .brand h1{font-size:20px}
+  .unlock-btn{width:100%}
 }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="brand">
-    <a href="logo.png" target="_blank" rel="noopener">
-      <img src="logo.png" alt="SuryaBets logo">
-      <div>
-        <h1>SuryaBets</h1>
-        <div class="small">Sports & Casino Universe</div>
-      </div>
-    </a>
-  </div>
-  <button class="claim-btn" onclick="openBonus()">Claim $500</button>
+  <a class="brand" href="#" rel="noopener">
+    <img src="logo.png" alt="SuryaBets logo">
+    <h1>SuryaBets</h1>
+  </a>
+
+  <a class="claim-btn" href="https://payments.cashfree.com/forms/dnoB" target="_blank" rel="noopener">
+    <!-- SVG Lock -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M7 10V8a5 5 0 0110 0v2" stroke="#04130b" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="4" y="10" width="16" height="10" rx="2" fill="#fff" stroke="#04130b" stroke-width="1.6"/>
+    </svg>
+    Unlock TOSS
+  </a>
 </header>
 
 <main>
   <div class="hero-card">
-    <a href="hero.png" target="_blank" rel="noopener">
-      <img src="hero.png" alt="SuryaBets promo banner">
-    </a>
+    <img src="hero.png" alt="SuryaBets banner">
   </div>
 
-  <section id="sports" class="section">
-    <div class="section-head">
-      <h2>Sports ⚽</h2>
-      <div class="small">Live markets • Top leagues</div>
-    </div>
-    <div class="ring-wrap" id="sportsWrap" data-visible="3">
-      <div class="ring-track" id="sportsTrack"></div>
-    </div>
-  </section>
+  <div class="believe-text">Believe in our prediction and let the game unfold in your favor</div>
 
-  <section id="casino" class="section">
-    <div class="section-head">
-      <h2>Casino 💰</h2>
-      <div class="small">Classic games • Quick play</div>
-    </div>
-    <div class="ring-wrap" id="casinoWrap" data-visible="3">
-      <div class="ring-track" id="casinoTrack"></div>
-    </div>
+  <div class="cta-box">
+    <div class="lead">Tap the button below to unlock Toss</div>
 
-    <!-- 💰 Bonus Button Below Casino -->
-    <div class="bonus-container">
-      <button class="bonus-btn" onclick="openBonus()">💰 Claim $500 Bonus</button>
+    <a class="unlock-btn" href="https://payments.cashfree.com/forms/dnoB" target="_blank" rel="noopener">
+      <!-- SVG Lock (Reliable, not emoji) -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M7 10V8a5 5 0 0110 0v2" stroke="#000" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="4" y="10" width="16" height="10" rx="2" fill="#ffd700" stroke="#000" stroke-width="1.6"/>
+      </svg>
+      Unlock TOSS
+    </a>
+
+    <div class="quotes">
+      <p class="quote-strong">Play smart. Trust your instincts. Win your toss.</p>
     </div>
-  </section>
+  </div>
 </main>
 
-<!-- 🎉 Bonus Modal -->
-<div id="bonusModal">
-  <div class="modal-content">
-    <h2>🎉 Congratulations!</h2>
-    <p>You’ve successfully claimed your <strong>$500 Welcome Bonus!</strong></p>
-    <button onclick="closeBonus()">Got it!</button>
-  </div>
-</div>
-
-<script>
-function openBonus(){
-  document.getElementById('bonusModal').style.display='flex';
-}
-function closeBonus(){
-  document.getElementById('bonusModal').style.display='none';
-}
-
-function buildRingCarousel({ baseItems, wrapId, interval = 2200 }) {
-  const wrap = document.getElementById(wrapId);
-  const track = wrap.querySelector('.ring-track');
-  const visible = Number(wrap.dataset.visible) || 3;
-  const items = [];
-  const copies = 3;
-  for (let c = 0; c < copies; c++) baseItems.forEach((it, idx) => items.push({ ...it, origIndex: idx }));
-  track.innerHTML = '';
-  items.forEach((it, idx) => {
-    const card = document.createElement('div');
-    card.className = 'ring-card';
-    card.dataset.idx = idx;
-    card.innerHTML = `<div class="icon">${it.icon}</div><h3>${it.title}</h3>`;
-    track.appendChild(card);
-  });
-  const cards = Array.from(track.children);
-  const origLen = baseItems.length;
-  let currentIndex = origLen;
-  function centerIndex(i, noTransition = false) {
-    if (noTransition) track.style.transition = 'none'; else track.style.transition = '';
-    const card = cards[i];
-    const wrapCenter = wrap.clientWidth / 2;
-    const cardCenter = card.offsetLeft + card.clientWidth / 2;
-    const translateX = cardCenter - wrapCenter;
-    track.style.transform = `translateX(${-translateX}px)`;
-    cards.forEach((c, idx) => {
-      c.classList.remove('active','inactive');
-      if (idx === i) c.classList.add('active'); else c.classList.add('inactive');
-    });
-    const firstMiddle = origLen;
-    const lastMiddle = origLen*2 - 1;
-    if (i < firstMiddle || i > lastMiddle) {
-      const rel = ((i - origLen) % origLen + origLen) % origLen;
-      const newIndex = origLen + rel;
-      setTimeout(() => {
-        track.style.transition = 'none';
-        const c2 = cards[newIndex];
-        const c2center = c2.offsetLeft + c2.clientWidth / 2;
-        const tx2 = c2center - wrapCenter;
-        track.style.transform = `translateX(${-tx2}px)`;
-        cards.forEach((c, k) => {
-          c.classList.remove('active','inactive');
-          if (k === newIndex) c.classList.add('active'); else c.classList.add('inactive');
-        });
-        currentIndex = newIndex;
-        setTimeout(()=> track.style.transition = '', 30);
-      }, 260);
-    } else {
-      currentIndex = i;
-    }
-  }
-  setTimeout(()=> centerIndex(currentIndex, true), 20);
-  let timer = setInterval(()=> centerIndex(currentIndex + 1, false), interval);
-  wrap.addEventListener('mouseenter', ()=> clearInterval(timer));
-  wrap.addEventListener('mouseleave', ()=> { clearInterval(timer); timer = setInterval(()=> centerIndex(currentIndex + 1, false), interval); });
-  track.addEventListener('click', (ev) => {
-    const card = ev.target.closest('.ring-card');
-    if (!card) return;
-    const idx = Number(card.dataset.idx);
-    centerIndex(idx, false);
-  });
-  return { destroy() { clearInterval(timer); } };
-}
-
-const sportsBase = [
-  { id:'cricket', title:'Cricket 🏏', icon:'🏏' },
-  { id:'football', title:'Football ⚽', icon:'⚽' },
-  { id:'kabbadi', title:'Kabbadi 💪', icon:'💪' },
-  { id:'basketball', title:'Basketball 🏀', icon:'🏀' },
-  { id:'hockey', title:'Hockey 🏑', icon:'🏑' },
-  { id:'tennis', title:'Tennis 🎾', icon:'🎾' },
-  { id:'volleyball', title:'Volleyball 🏐', icon:'🏐' },
-  { id:'icehockey', title:'Ice Hockey 🏒', icon:'🏒' },
-];
-
-const casinoBase = [
-  { id:'aviator', title:'Aviator ✈️', icon:'✈️' },
-  { id:'dragon', title:'Dragon & Tiger 🐉🐅', icon:'🐉' },
-  { id:'3patti', title:'3 Patti ♠️', icon:'♠️' },
-  { id:'roulette', title:'Roulette 🎡', icon:'🎡' },
-  { id:'color', title:'Color Prediction 🎨', icon:'🎨' },
-  { id:'fun', title:'Fun Games 🎮', icon:'🎮' },
-];
-
-const sportsCarousel = buildRingCarousel({ baseItems: sportsBase, wrapId: 'sportsWrap', interval: 2000 });
-const casinoCarousel = buildRingCarousel({ baseItems: casinoBase, wrapId: 'casinoWrap', interval: 2200 });
-
-window.addEventListener('pagehide', ()=> { sportsCarousel.destroy(); casinoCarousel.destroy(); });
-</script>
 </body>
 </html>
