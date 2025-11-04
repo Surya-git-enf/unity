@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -40,7 +39,7 @@ header{
 }
 .brand{display:flex;align-items:center;gap:12px}
 .brand a{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
-.brand img{width:52px;height:52px;border-radius:10px;object-fit:contain;background:rgba(255,255,255,0.02);padding:6px}
+.brand img{width:52px;height:52px;border-radius:15px;object-fit:contain;background:rgba(255,255,255,0.02);padding:6px}
 .brand h1{margin:0;font-size:26px}
 .claim-btn{
   background:linear-gradient(90deg,var(--green1),var(--green2));
@@ -72,6 +71,7 @@ main{
   display:block;
   object-fit:cover;
   max-height:520px;
+  box-shadow: rgba(250,250,250,0.5);
 }
 
 /* Section */
@@ -82,7 +82,7 @@ main{
 
 /* Carousel */
 .ring-wrap{
-  height: calc(var(--card-w) * 0.7 + 30px);
+  height: calc(var(--card-w) * 1.5 + 30px);
   overflow:hidden;
   position:relative;
   display:flex;
@@ -99,7 +99,7 @@ main{
 .ring-card{
   width:var(--card-w);
   min-width:var(--card-w);
-  height:calc(var(--card-w)*0.7);
+  height:calc(var(--card-w)*1);
   border-radius:12px;
   background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -108,13 +108,77 @@ main{
 }
 .ring-card .icon{font-size:34px}
 .ring-card h3{margin:8px 0 0;font-size:14px}
-.ring-card.active{transform:scale(1.14);box-shadow:0 20px 50px rgba(0,0,0,0.6)}
+.ring-card.active{transform:scale(1.14);box-shadow:0 20px 50px #aaabcd}
 .ring-card.inactive{opacity:0.85;transform:scale(0.92)}
 
 /* Casino smaller */
-#casino .ring-wrap{height:120px}
-#casino .ring-card{width:130px;height:92px}
+#casino .ring-wrap{height:200px}
+#casino .ring-card{width:130px;height:140px}
 
+/* Bonus button */
+.bonus-container{
+  text-align:center;
+  margin-top:20px;
+}
+.bonus-btn{
+  background: linear-gradient(135deg, #ffcc00, #ff9900);
+  color: #000;
+  font-size: 22px;
+  font-weight: bold;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 40px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 165, 0, 0.5);
+  transition: all 0.3s ease;
+}
+.bonus-btn:hover{
+  transform: scale(1.08);
+}
+
+/* Modal Styles */
+#bonusModal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+}
+#bonusModal .modal-content {
+  background: #111;
+  padding: 30px 40px;
+  border-radius: 16px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+  animation: pop 0.3s ease;
+}
+#bonusModal h2 {
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+#bonusModal p {
+  margin-bottom: 20px;
+}
+#bonusModal button {
+  background: linear-gradient(90deg, var(--green1), var(--green2));
+  border: none;
+  color: #000;
+  font-weight: bold;
+  padding: 10px 25px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+@keyframes pop {
+  0%{transform: scale(0.8);opacity:0}
+  100%{transform: scale(1);opacity:1}
+}
 @media (max-width:920px){
   :root{--card-w:120px}
   .brand h1{font-size:20px}
@@ -133,13 +197,13 @@ main{
       </div>
     </a>
   </div>
-  <button class="claim-btn">$500 Bonus 💰</button>
+  <button class="claim-btn" onclick="openBonus()">Claim $500</button>
 </header>
 
 <main>
   <div class="hero-card">
-    <a href="hero.jpg" target="_blank" rel="noopener">
-      <img src="hero.jpg" alt="SuryaBets promo banner">
+    <a href="hero.png" target="_blank" rel="noopener">
+      <img src="hero.png" alt="SuryaBets promo banner">
     </a>
   </div>
 
@@ -161,10 +225,31 @@ main{
     <div class="ring-wrap" id="casinoWrap" data-visible="3">
       <div class="ring-track" id="casinoTrack"></div>
     </div>
+
+    <!-- 💰 Bonus Button Below Casino -->
+    <div class="bonus-container">
+      <button class="bonus-btn" onclick="openBonus()">💰 Claim $500 Bonus</button>
+    </div>
   </section>
 </main>
 
+<!-- 🎉 Bonus Modal -->
+<div id="bonusModal">
+  <div class="modal-content">
+    <h2>🎉 Congratulations!</h2>
+    <p>You’ve successfully claimed your <strong>$500 Welcome Bonus!</strong></p>
+    <button onclick="closeBonus()">Got it!</button>
+  </div>
+</div>
+
 <script>
+function openBonus(){
+  document.getElementById('bonusModal').style.display='flex';
+}
+function closeBonus(){
+  document.getElementById('bonusModal').style.display='none';
+}
+
 function buildRingCarousel({ baseItems, wrapId, interval = 2200 }) {
   const wrap = document.getElementById(wrapId);
   const track = wrap.querySelector('.ring-track');
