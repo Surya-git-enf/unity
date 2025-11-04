@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>SuryaBets — Premier Sports & Casino (Ring Loop)</title>
+<title>SuryaBets — Premier Sports & Casino (Vertical Scroll)</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Khand:wght@400;700&display=swap" rel="stylesheet">
 
@@ -17,51 +17,103 @@
   --card-w:150px;
   --gap:18px;
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0}
 body{
-  margin:0;
   font-family:"Khand",system-ui,Arial;
-  background:linear-gradient(180deg,#0b0c0f 0%,#07080b 60%);
+  background:linear-gradient(180deg,#0b0c0f 0%,#07080b 100%);
   color:#fff;
+  overflow-x:hidden;
+  overflow-y:auto;
+  scroll-behavior:smooth;
   -webkit-font-smoothing:antialiased;
 }
+
+/* Header */
 header{
   display:flex;align-items:center;justify-content:space-between;
-  padding:14px 24px;background:linear-gradient(90deg,rgba(0,179,60,0.12),rgba(0,0,0,0.25));
-  position:sticky;top:0;z-index:60;border-bottom:1px solid rgba(255,255,255,0.04);
+  padding:14px 24px;
+  background:linear-gradient(90deg,rgba(0,179,60,0.4),rgba(0,0,0,0.7));
+  position:sticky;top:0;z-index:60;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  backdrop-filter:blur(10px);
 }
 .brand{display:flex;align-items:center;gap:12px}
 .brand a{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
 .brand img{width:52px;height:52px;border-radius:10px;object-fit:contain;background:rgba(255,255,255,0.02);padding:6px}
 .brand h1{margin:0;font-size:26px}
-.claim-btn{background:linear-gradient(90deg,var(--green1),var(--green2));color:#04130b;font-weight:800;padding:10px 16px;border-radius:12px;border:none;cursor:pointer;box-shadow:0 8px 30px rgba(0,179,60,0.18)}
+.claim-btn{
+  background:linear-gradient(90deg,var(--green1),var(--green2));
+  color:#04130b;font-weight:800;padding:10px 16px;border-radius:12px;border:none;cursor:pointer;
+  box-shadow:0 8px 30px rgba(0,179,60,0.18);transition:transform .1s;
+}
 .claim-btn:active{transform:translateY(1px)}
 
+/* Scrollable main content */
+main{
+  display:flex;
+  flex-direction:column;
+  gap:40px;
+  padding:20px 18px 80px;
+  max-width:1200px;
+  margin:0 auto;
+  overflow-y:auto;
+}
+
 /* Hero */
-.container{max-width:1200px;margin:22px auto;padding:0 18px}
-.hero-card{border-radius:16px;overflow:hidden;box-shadow:0 28px 90px rgba(0,0,0,0.6)}
-.hero-card a img{width:100%;height:auto;display:block;object-fit:cover;max-height:520px}
+.hero-card{
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 28px 90px rgba(0,0,0,0.6);
+}
+.hero-card a img{
+  width:100%;
+  height:auto;
+  display:block;
+  object-fit:cover;
+  max-height:520px;
+}
 
 /* Section */
-.section{margin:36px 0}
+.section{margin-top:10px}
 .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.section-head h2{margin:0;font-size:22px}
+.section-head h2{margin:0;font-size:24px;display:flex;align-items:center;gap:10px}
 .section-head .small{font-size:12px;color:#cfeecd}
 
-/* Short 3-visible ring carousel */
-.ring-wrap{height: calc(var(--card-w) * 0.7 + 30px); overflow:hidden; position:relative; display:flex; align-items:center}
-.ring-track{display:flex;gap:var(--gap);align-items:center;transition:transform 600ms cubic-bezier(.22,.9,.22,1); will-change:transform;padding:10px 0}
-.ring-card{width:var(--card-w);min-width:var(--card-w);height:calc(var(--card-w)*0.7);border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;text-align:center;transition:transform 300ms,box-shadow 300ms,opacity 300ms}
+/* Carousel */
+.ring-wrap{
+  height: calc(var(--card-w) * 0.7 + 30px);
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+.ring-track{
+  display:flex;
+  gap:var(--gap);
+  align-items:center;
+  transition:transform 600ms cubic-bezier(.22,.9,.22,1);
+  will-change:transform;
+  padding:10px 0;
+}
+.ring-card{
+  width:var(--card-w);
+  min-width:var(--card-w);
+  height:calc(var(--card-w)*0.7);
+  border-radius:12px;
+  background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:10px;text-align:center;
+  transition:transform 300ms,box-shadow 300ms,opacity 300ms;
+}
 .ring-card .icon{font-size:34px}
 .ring-card h3{margin:8px 0 0;font-size:14px}
 .ring-card.active{transform:scale(1.14);box-shadow:0 20px 50px rgba(0,0,0,0.6)}
 .ring-card.inactive{opacity:0.85;transform:scale(0.92)}
 
-/* Casino more compact */
+/* Casino smaller */
 #casino .ring-wrap{height:120px}
 #casino .ring-card{width:130px;height:92px}
 
-/* Responsive */
 @media (max-width:920px){
   :root{--card-w:120px}
   .brand h1{font-size:20px}
@@ -71,7 +123,6 @@ header{
 <body>
 
 <header>
-  <!-- Logo link: clicking opens image in browser -->
   <div class="brand">
     <a href="logo.png" target="_blank" rel="noopener">
       <img src="logo.png" alt="SuryaBets logo">
@@ -81,71 +132,45 @@ header{
       </div>
     </a>
   </div>
-
   <button class="claim-btn">$500 Bonus 💰</button>
 </header>
 
-<main class="container">
-  <!-- Hero: clicking opens the image file -->
+<main>
   <div class="hero-card">
     <a href="hero.jpg" target="_blank" rel="noopener">
       <img src="hero.jpg" alt="SuryaBets promo banner">
     </a>
   </div>
 
-  <!-- SPORTS ring carousel (3-visible, ring) -->
   <section id="sports" class="section">
     <div class="section-head">
       <h2>Sports ⚽</h2>
       <div class="small">Live markets • Top leagues</div>
     </div>
-
     <div class="ring-wrap" id="sportsWrap" data-visible="3">
-      <div class="ring-track" id="sportsTrack" aria-hidden="false">
-        <!-- Items will be populated by JS (tripled for ring effect) -->
-      </div>
+      <div class="ring-track" id="sportsTrack"></div>
     </div>
   </section>
 
-  <!-- CASINO ring carousel (3-visible, shorter) -->
   <section id="casino" class="section">
     <div class="section-head">
       <h2>Casino 💰</h2>
       <div class="small">Classic games • Quick play</div>
     </div>
-
     <div class="ring-wrap" id="casinoWrap" data-visible="3">
-      <div class="ring-track" id="casinoTrack">
-        <!-- Items by JS -->
-      </div>
+      <div class="ring-track" id="casinoTrack"></div>
     </div>
   </section>
 </main>
 
 <script>
-/*
-  Ring carousel builder:
-  - baseItems: array of { id, title, iconHtml (string) }
-  - containerId: ID of ringWrap element (must contain .ring-track child)
-  Behavior:
-  - tripled list for seamless looping
-  - center the active card in the visible area (visible count = 3)
-  - autoplay with pause-on-hover, click card to center
-*/
-
 function buildRingCarousel({ baseItems, wrapId, interval = 2200 }) {
   const wrap = document.getElementById(wrapId);
   const track = wrap.querySelector('.ring-track');
   const visible = Number(wrap.dataset.visible) || 3;
-
-  // Build tripled array
   const items = [];
   const copies = 3;
-  for (let c = 0; c < copies; c++) {
-    baseItems.forEach((it, idx) => items.push(Object.assign({}, it, { origIndex: idx })));
-  }
-
-  // Render items
+  for (let c = 0; c < copies; c++) baseItems.forEach((it, idx) => items.push({ ...it, origIndex: idx }));
   track.innerHTML = '';
   items.forEach((it, idx) => {
     const card = document.createElement('div');
@@ -154,42 +179,29 @@ function buildRingCarousel({ baseItems, wrapId, interval = 2200 }) {
     card.innerHTML = `<div class="icon">${it.icon}</div><h3>${it.title}</h3>`;
     track.appendChild(card);
   });
-
   const cards = Array.from(track.children);
   const origLen = baseItems.length;
-  // start at middle copy, first element
   let currentIndex = origLen;
-
-  // function to center a given index
   function centerIndex(i, noTransition = false) {
-    if (noTransition) track.style.transition = 'none';
-    else track.style.transition = '';
-
+    if (noTransition) track.style.transition = 'none'; else track.style.transition = '';
     const card = cards[i];
-    // center the card in wrap
     const wrapCenter = wrap.clientWidth / 2;
-    const cardCenter = card.offsetLeft + (card.clientWidth / 2);
+    const cardCenter = card.offsetLeft + card.clientWidth / 2;
     const translateX = cardCenter - wrapCenter;
     track.style.transform = `translateX(${-translateX}px)`;
-
-    // update classes
     cards.forEach((c, idx) => {
       c.classList.remove('active','inactive');
-      if (idx === i) c.classList.add('active');
-      else c.classList.add('inactive');
+      if (idx === i) c.classList.add('active'); else c.classList.add('inactive');
     });
-
-    // if out of middle bounds, reset to middle equivalent without visible jump
     const firstMiddle = origLen;
     const lastMiddle = origLen*2 - 1;
     if (i < firstMiddle || i > lastMiddle) {
       const rel = ((i - origLen) % origLen + origLen) % origLen;
       const newIndex = origLen + rel;
-      // schedule immediate jump to middle copy (no transition)
       setTimeout(() => {
         track.style.transition = 'none';
         const c2 = cards[newIndex];
-        const c2center = c2.offsetLeft + (c2.clientWidth / 2);
+        const c2center = c2.offsetLeft + c2.clientWidth / 2;
         const tx2 = c2center - wrapCenter;
         track.style.transform = `translateX(${-tx2}px)`;
         cards.forEach((c, k) => {
@@ -197,61 +209,49 @@ function buildRingCarousel({ baseItems, wrapId, interval = 2200 }) {
           if (k === newIndex) c.classList.add('active'); else c.classList.add('inactive');
         });
         currentIndex = newIndex;
-        // restore transition shortly after
         setTimeout(()=> track.style.transition = '', 30);
       }, 260);
     } else {
       currentIndex = i;
     }
   }
-
-  // initial center (no transition so user doesn't see jump)
   setTimeout(()=> centerIndex(currentIndex, true), 20);
-
-  // autoplay
   let timer = setInterval(()=> centerIndex(currentIndex + 1, false), interval);
-
-  // pause on hover
   wrap.addEventListener('mouseenter', ()=> clearInterval(timer));
   wrap.addEventListener('mouseleave', ()=> { clearInterval(timer); timer = setInterval(()=> centerIndex(currentIndex + 1, false), interval); });
-
-  // click card to center
   track.addEventListener('click', (ev) => {
     const card = ev.target.closest('.ring-card');
     if (!card) return;
     const idx = Number(card.dataset.idx);
     centerIndex(idx, false);
   });
-
-  // expose control object
-  return {
-    destroy() { clearInterval(timer); },
-    next() { centerIndex(currentIndex + 1, false); },
-    prev() { centerIndex(currentIndex - 1, false); }
-  };
+  return { destroy() { clearInterval(timer); } };
 }
 
-/* ===== Build sports & casino base lists ===== */
 const sportsBase = [
-  { id:'cricket', title:'Cricket 🏏', icon: '🏏' },
-  { id:'football', title:'Football ⚽', icon: '⚽' },
-  { id:'racing', title:'Racing 🏎️', icon: '🏎️' },
+  { id:'cricket', title:'Cricket 🏏', icon:'🏏' },
+  { id:'football', title:'Football ⚽', icon:'⚽' },
+  { id:'kabbadi', title:'Kabbadi 💪', icon:'💪' },
+  { id:'basketball', title:'Basketball 🏀', icon:'🏀' },
+  { id:'hockey', title:'Hockey 🏑', icon:'🏑' },
+  { id:'tennis', title:'Tennis 🎾', icon:'🎾' },
+  { id:'volleyball', title:'Volleyball 🏐', icon:'🏐' },
+  { id:'icehockey', title:'Ice Hockey 🏒', icon:'🏒' },
 ];
 
 const casinoBase = [
-  { id:'roulette', title:'Roulette', icon: '<svg width="42" height="42" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="14" stroke="#fff" stroke-width="2" fill="none"/><line x1="32" y1="18" x2="32" y2="46" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>' },
-  { id:'slots', title:'Slots 🎰', icon: '🎰' },
-  { id:'3patti', title:'3 Patti', icon: '🂡' },
+  { id:'aviator', title:'Aviator ✈️', icon:'✈️' },
+  { id:'dragon', title:'Dragon & Tiger 🐉🐅', icon:'🐉' },
+  { id:'3patti', title:'3 Patti ♠️', icon:'♠️' },
+  { id:'roulette', title:'Roulette 🎡', icon:'🎡' },
+  { id:'color', title:'Color Prediction 🎨', icon:'🎨' },
+  { id:'fun', title:'Fun Games 🎮', icon:'🎮' },
 ];
 
-/* Initialize ring carousels with short visible rotation and ring effect */
 const sportsCarousel = buildRingCarousel({ baseItems: sportsBase, wrapId: 'sportsWrap', interval: 2000 });
-const casinoCarousel = buildRingCarousel({ baseItems: casinoBase, wrapId: 'casinoWrap', interval: 2400 });
+const casinoCarousel = buildRingCarousel({ baseItems: casinoBase, wrapId: 'casinoWrap', interval: 2200 });
 
-/* cleanup on hide */
-window.addEventListener('pagehide', ()=> {
-  sportsCarousel.destroy(); casinoCarousel.destroy();
-});
+window.addEventListener('pagehide', ()=> { sportsCarousel.destroy(); casinoCarousel.destroy(); });
 </script>
 </body>
 </html>
