@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>StakeBets — Unlock TOSS</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Khand:wght@400;700&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --green1:#00ff6a;
+  --green2:#00b33c;
+  --bg:#07080b;
+  --glass:rgba(255,255,255,0.05);
+  --accent:#ffd700;
+  --white:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Khand", system-ui, Arial;
+  background:radial-gradient(circle at top,#0f1115 0%,#050607 100%);
+  color:var(--white);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  scroll-behavior:smooth;
+}
+
+/* Header */
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 24px;
+  background:rgba(0,179,60,0.12);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  backdrop-filter:blur(10px);
+  position:sticky;top:0;z-index:60;
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.brand img{width:50px;height:50px;border-radius:14px;object-fit:contain;background:rgba(255,255,255,0.05);padding:6px}
+.brand h1{margin:0;font-size:26px;letter-spacing:1px}
+
+/* Main Content */
+main{
+  display:flex;flex-direction:column;gap:28px;
+  padding:40px 18px 100px;
+  max-width:900px;margin:0 auto;text-align:center;
+}
+
+/* Hero Card */
+.hero-card{
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 10px 40px rgba(0,0,0,0.6);
+  position:relative;
+}
+.hero-card img{
+  width:100%;
+  height:250px;
+  object-fit:cover;
+  display:block;
+  opacity:0;
+  transition:opacity 1.2s ease;
+}
+
+/* Lock Overlay */
+.lock-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,0.5);
+  backdrop-filter:blur(6px);
+  border-radius:18px;
+  cursor:pointer;
+  z-index:10;
+}
+.lock{
+  width:120px;
+  height:180px;
+  position:relative;
+  opacity:0.9;
+  transition:transform 0.5s ease;
+}
+.lock-body{
+  fill:#fff;
+  stroke:none;
+}
+.lock-shackle{
+  fill:none;
+  stroke:#fff;
+  stroke-width:10;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  transform-origin:center;
+  transition:transform 0.6s ease;
+}
+
+/* Text */
+.believe-text{
+  font-size:22px;
+  font-weight:700;
+  color:#fff;
+  text-shadow:0 0 20px rgba(255,255,255,0.2);
+  margin-top:10px;
+  letter-spacing:0.8px;
+}
+.quote{
+  font-family:'Orbitron', sans-serif;
+  font-size:18px;
+  color:#ffd700;
+  margin-top:16px;
+  text-shadow:0 0 10px rgba(255,215,0,0.4);
+}
+
+/* Animation states */
+.unlocked .lock-shackle{
+  transform:rotate(-35deg) translateY(-15px);
+}
+.fade-out{
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.8s ease;
+}
+.fade-in{
+  opacity:1 !important;
+}
+
+@media (max-width:720px){
+  .brand h1{font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="#" rel="noopener">
+    <img src="logo.png" alt="StakeBets logo">
+    <h1>StakeBets</h1>
+  </a>
+</header>
+
+<main>
+  <div class="hero-card">
+    <div class="lock-overlay" id="lockOverlay">
+      <svg class="lock" viewBox="0 0 120 150" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shackle -->
+  <path class="lock-shackle"
+        d="M35 55 V35 A25 25 0 0 1 95 45 V55"
+        fill="none"
+        stroke="#ffffff"
+        stroke-width="8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        opacity="0.9"/>
+  
+  <!-- Lock body -->
+  <rect class="lock-body" 
+        x="25" y="55" 
+        width="80" height="75" 
+        rx="10" ry="10"
+        fill="#ffffff" 
+        opacity="0.9"/>
+  
+  <!-- Keyhole circle -->
+  <circle cx="65" cy="90" r="6" fill="#07080b" opacity="0.9"/>
+  
+  <!-- Keyhole slot -->
+  <rect x="62" y="90" width="6" height="15" rx="2" fill="#07080b" opacity="0.9"/>
+</svg>
+    </div>
+    <img id="heroImage" src="toss.png" alt="StakeBets banner">
+  </div>
+
+  <div class="quote">Bet your way to glory and celebrate the winnings</div>
+</main>
+
+<script>
+const overlay = document.getElementById("lockOverlay");
+const hero = document.getElementById("heroImage");
+
+function unlock() {
+  if (overlay.classList.contains("fade-out")) return;
+  overlay.querySelector(".lock").classList.add("unlocked");
+  setTimeout(() => {
+    overlay.classList.add("fade-out");
+    hero.classList.add("fade-in");
+  }, 1200);
+}
+
+overlay.addEventListener("click", unlock);
+setTimeout(unlock, 1500);
+</script>
+
+</body>
+</html>
