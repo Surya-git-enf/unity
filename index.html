@@ -1,168 +1,257 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Unity Betting - Home</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>SuryaBets — Premier Sports & Casino (Vertical Scroll)</title>
 
-    body {
-      font-family: Arial, sans-serif;
-      color: #fff;
-      background-color: #0b0b0b;
-      overflow-x: hidden;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Khand:wght@400;700&display=swap" rel="stylesheet">
 
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 40px;
-      background: rgba(0, 0, 0, 0.6);
-      position: sticky;
-      top: 0;
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-    }
+<style>
+:root{
+  --green1:#00ff6a;
+  --green2:#00b33c;
+  --bg:#07080b;
+  --glass:rgba(255,255,255,0.04);
+  --accent:#ffd700;
+  --card-w:150px;
+  --gap:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Khand",system-ui,Arial;
+  background:linear-gradient(180deg,#0b0c0f 0%,#07080b 100%);
+  color:#fff;
+  overflow-x:hidden;
+  overflow-y:auto;
+  scroll-behavior:smooth;
+  -webkit-font-smoothing:antialiased;
+}
 
-    header img {
-      height: 50px;
-    }
+/* Header */
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 24px;
+  background:linear-gradient(90deg,rgba(0,179,60,0.4),rgba(0,0,0,0.7));
+  position:sticky;top:0;z-index:60;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  backdrop-filter:blur(10px);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand a{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.brand img{width:52px;height:52px;border-radius:10px;object-fit:contain;background:rgba(255,255,255,0.02);padding:6px}
+.brand h1{margin:0;font-size:26px}
+.claim-btn{
+  background:linear-gradient(90deg,var(--green1),var(--green2));
+  color:#04130b;font-weight:800;padding:10px 16px;border-radius:12px;border:none;cursor:pointer;
+  box-shadow:0 8px 30px rgba(0,179,60,0.18);transition:transform .1s;
+}
+.claim-btn:active{transform:translateY(1px)}
 
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      margin-left: 20px;
-      font-weight: bold;
-    }
+/* Scrollable main content */
+main{
+  display:flex;
+  flex-direction:column;
+  gap:40px;
+  padding:20px 18px 80px;
+  max-width:1200px;
+  margin:0 auto;
+  overflow-y:auto;
+}
 
-    nav a:hover {
-      color: #ffd700;
-    }
+/* Hero */
+.hero-card{
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 28px 90px rgba(0,0,0,0.6);
+}
+.hero-card a img{
+  width:100%;
+  height:auto;
+  display:block;
+  object-fit:cover;
+  max-height:520px;
+}
 
-    .hero {
-      background: url('./hero.png') no-repeat center center/cover;
-      height: 90vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
+/* Section */
+.section{margin-top:10px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-head h2{margin:0;font-size:24px;display:flex;align-items:center;gap:10px}
+.section-head .small{font-size:12px;color:#cfeecd}
 
-    .hero h1 {
-      font-size: 3em;
-      font-weight: bold;
-      color: #ffd700;
-    }
+/* Carousel */
+.ring-wrap{
+  height: calc(var(--card-w) * 0.7 + 30px);
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+.ring-track{
+  display:flex;
+  gap:var(--gap);
+  align-items:center;
+  transition:transform 600ms cubic-bezier(.22,.9,.22,1);
+  will-change:transform;
+  padding:10px 0;
+}
+.ring-card{
+  width:var(--card-w);
+  min-width:var(--card-w);
+  height:calc(var(--card-w)*0.7);
+  border-radius:12px;
+  background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:10px;text-align:center;
+  transition:transform 300ms,box-shadow 300ms,opacity 300ms;
+}
+.ring-card .icon{font-size:34px}
+.ring-card h3{margin:8px 0 0;font-size:14px}
+.ring-card.active{transform:scale(1.14);box-shadow:0 20px 50px rgba(0,0,0,0.6)}
+.ring-card.inactive{opacity:0.85;transform:scale(0.92)}
 
-    .hero p {
-      margin-top: 10px;
-      font-size: 1.2em;
-      color: #fff;
-      max-width: 500px;
-    }
+/* Casino smaller */
+#casino .ring-wrap{height:120px}
+#casino .ring-card{width:130px;height:92px}
 
-    .hero button {
-      margin-top: 20px;
-      padding: 12px 25px;
-      font-size: 1.1em;
-      background-color: #ffd700;
-      color: #000;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .hero button:hover {
-      background-color: #ffdb4d;
-    }
-
-    section {
-      padding: 60px 20px;
-      text-align: center;
-      background-color: #111;
-    }
-
-    section h2 {
-      color: #ffd700;
-      margin-bottom: 30px;
-    }
-
-    .offers {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .offer {
-      background: #1a1a1a;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-      transition: 0.3s;
-    }
-
-    .offer:hover {
-      transform: translateY(-5px);
-      background: #222;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #000;
-      color: #777;
-    }
-  </style>
+@media (max-width:920px){
+  :root{--card-w:120px}
+  .brand h1{font-size:20px}
+}
+</style>
 </head>
 <body>
-  <header>
-    <img src="./logo.png" alt="Unity Logo" />
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Offers</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
-    </nav>
-  </header>
 
-  <main>
-    <section class="hero">
-      <h1>Welcome to Unity Betting</h1>
-      <p>Bet smart, play safe, and enjoy the best odds in the game!</p>
-      <button>Join Now</button>
-    </section>
-
-    <section>
-      <h2>🔥 Hot Offers</h2>
-      <div class="offers">
-        <div class="offer">
-          <h3>100% Welcome Bonus</h3>
-          <p>Get double your first deposit instantly!</p>
-        </div>
-        <div class="offer">
-          <h3>Refer & Earn</h3>
-          <p>Invite your friends and win free credits.</p>
-        </div>
-        <div class="offer">
-          <h3>Daily Challenges</h3>
-          <p>Participate and unlock exciting rewards.</p>
-        </div>
+<header>
+  <div class="brand">
+    <a href="logo.png" target="_blank" rel="noopener">
+      <img src="logo.png" alt="SuryaBets logo">
+      <div>
+        <h1>SuryaBets</h1>
+        <div class="small">Sports & Casino Universe</div>
       </div>
-    </section>
-  </main>
+    </a>
+  </div>
+  <button class="claim-btn">$500 Bonus 💰</button>
+</header>
 
-  <footer>
-    <p>© 2025 Unity Betting. All rights reserved.</p>
-  </footer>
+<main>
+  <div class="hero-card">
+    <a href="hero.jpg" target="_blank" rel="noopener">
+      <img src="hero.jpg" alt="SuryaBets promo banner">
+    </a>
+  </div>
+
+  <section id="sports" class="section">
+    <div class="section-head">
+      <h2>Sports ⚽</h2>
+      <div class="small">Live markets • Top leagues</div>
+    </div>
+    <div class="ring-wrap" id="sportsWrap" data-visible="3">
+      <div class="ring-track" id="sportsTrack"></div>
+    </div>
+  </section>
+
+  <section id="casino" class="section">
+    <div class="section-head">
+      <h2>Casino 💰</h2>
+      <div class="small">Classic games • Quick play</div>
+    </div>
+    <div class="ring-wrap" id="casinoWrap" data-visible="3">
+      <div class="ring-track" id="casinoTrack"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+function buildRingCarousel({ baseItems, wrapId, interval = 2200 }) {
+  const wrap = document.getElementById(wrapId);
+  const track = wrap.querySelector('.ring-track');
+  const visible = Number(wrap.dataset.visible) || 3;
+  const items = [];
+  const copies = 3;
+  for (let c = 0; c < copies; c++) baseItems.forEach((it, idx) => items.push({ ...it, origIndex: idx }));
+  track.innerHTML = '';
+  items.forEach((it, idx) => {
+    const card = document.createElement('div');
+    card.className = 'ring-card';
+    card.dataset.idx = idx;
+    card.innerHTML = `<div class="icon">${it.icon}</div><h3>${it.title}</h3>`;
+    track.appendChild(card);
+  });
+  const cards = Array.from(track.children);
+  const origLen = baseItems.length;
+  let currentIndex = origLen;
+  function centerIndex(i, noTransition = false) {
+    if (noTransition) track.style.transition = 'none'; else track.style.transition = '';
+    const card = cards[i];
+    const wrapCenter = wrap.clientWidth / 2;
+    const cardCenter = card.offsetLeft + card.clientWidth / 2;
+    const translateX = cardCenter - wrapCenter;
+    track.style.transform = `translateX(${-translateX}px)`;
+    cards.forEach((c, idx) => {
+      c.classList.remove('active','inactive');
+      if (idx === i) c.classList.add('active'); else c.classList.add('inactive');
+    });
+    const firstMiddle = origLen;
+    const lastMiddle = origLen*2 - 1;
+    if (i < firstMiddle || i > lastMiddle) {
+      const rel = ((i - origLen) % origLen + origLen) % origLen;
+      const newIndex = origLen + rel;
+      setTimeout(() => {
+        track.style.transition = 'none';
+        const c2 = cards[newIndex];
+        const c2center = c2.offsetLeft + c2.clientWidth / 2;
+        const tx2 = c2center - wrapCenter;
+        track.style.transform = `translateX(${-tx2}px)`;
+        cards.forEach((c, k) => {
+          c.classList.remove('active','inactive');
+          if (k === newIndex) c.classList.add('active'); else c.classList.add('inactive');
+        });
+        currentIndex = newIndex;
+        setTimeout(()=> track.style.transition = '', 30);
+      }, 260);
+    } else {
+      currentIndex = i;
+    }
+  }
+  setTimeout(()=> centerIndex(currentIndex, true), 20);
+  let timer = setInterval(()=> centerIndex(currentIndex + 1, false), interval);
+  wrap.addEventListener('mouseenter', ()=> clearInterval(timer));
+  wrap.addEventListener('mouseleave', ()=> { clearInterval(timer); timer = setInterval(()=> centerIndex(currentIndex + 1, false), interval); });
+  track.addEventListener('click', (ev) => {
+    const card = ev.target.closest('.ring-card');
+    if (!card) return;
+    const idx = Number(card.dataset.idx);
+    centerIndex(idx, false);
+  });
+  return { destroy() { clearInterval(timer); } };
+}
+
+const sportsBase = [
+  { id:'cricket', title:'Cricket 🏏', icon:'🏏' },
+  { id:'football', title:'Football ⚽', icon:'⚽' },
+  { id:'kabbadi', title:'Kabbadi 💪', icon:'💪' },
+  { id:'basketball', title:'Basketball 🏀', icon:'🏀' },
+  { id:'hockey', title:'Hockey 🏑', icon:'🏑' },
+  { id:'tennis', title:'Tennis 🎾', icon:'🎾' },
+  { id:'volleyball', title:'Volleyball 🏐', icon:'🏐' },
+  { id:'icehockey', title:'Ice Hockey 🏒', icon:'🏒' },
+];
+
+const casinoBase = [
+  { id:'aviator', title:'Aviator ✈️', icon:'✈️' },
+  { id:'dragon', title:'Dragon & Tiger 🐉🐅', icon:'🐉' },
+  { id:'3patti', title:'3 Patti ♠️', icon:'♠️' },
+  { id:'roulette', title:'Roulette 🎡', icon:'🎡' },
+  { id:'color', title:'Color Prediction 🎨', icon:'🎨' },
+  { id:'fun', title:'Fun Games 🎮', icon:'🎮' },
+];
+
+const sportsCarousel = buildRingCarousel({ baseItems: sportsBase, wrapId: 'sportsWrap', interval: 2000 });
+const casinoCarousel = buildRingCarousel({ baseItems: casinoBase, wrapId: 'casinoWrap', interval: 2200 });
+
+window.addEventListener('pagehide', ()=> { sportsCarousel.destroy(); casinoCarousel.destroy(); });
+</script>
 </body>
-  </html>
+</html>
