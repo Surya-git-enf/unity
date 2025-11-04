@@ -1,0 +1,160 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>SuryaBets — Premier Sports & Casino</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Khand:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --green1:#00ff6a; --green2:#00b33c; --bg:#07080b; --card-w:150px; --gap:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Khand",system-ui,Arial;
+  background:linear-gradient(180deg,#0b0c0f 0%,#07080b 100%);
+  color:#fff; overflow-x:hidden; overflow-y:auto; scroll-behavior:smooth;
+}
+/* Header */
+header{ display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px; position:sticky; top:0; z-index:60;
+  background:linear-gradient(90deg,rgba(0,179,60,0.3),rgba(0,0,0,0.6));
+  border-bottom:1px solid rgba(255,255,255,0.03); backdrop-filter:blur(8px);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand a{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.brand img{width:52px;height:52px;border-radius:10px;object-fit:contain;padding:6px;background:rgba(255,255,255,0.02)}
+.brand h1{margin:0;font-size:20px}
+.claim-btn{background:linear-gradient(90deg,var(--green1),var(--green2));color:#04130b;padding:10px 14px;border-radius:12px;border:none;font-weight:800;cursor:pointer}
+
+/* Layout */
+main{max-width:1200px;margin:18px auto;padding:20px}
+.hero{border-radius:14px;overflow:hidden;box-shadow:0 28px 90px rgba(0,0,0,0.6);margin-bottom:22px}
+.hero a img{display:block;width:100%;height:auto;max-height:520px;object-fit:cover}
+
+/* Sections */
+.section{margin:28px 0}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-head h2{margin:0;font-size:22px}
+.small{font-size:12px;color:#cfeecd}
+
+/* Ring carousel */
+.ring-wrap{height: calc(var(--card-w) * 0.7 + 28px); overflow:hidden; position:relative; display:flex; align-items:center}
+.ring-track{display:flex;gap:var(--gap);align-items:center; will-change:transform; transition:transform 200ms linear; padding:10px 0}
+.ring-card{ width:var(--card-w); min-width:var(--card-w); height:calc(var(--card-w)*0.7); border-radius:12px;
+  background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;text-align:center;
+  transition:transform 260ms,box-shadow 260ms,opacity 260ms;
+}
+.ring-card .icon{font-size:34px}
+.ring-card h3{margin:8px 0 0;font-size:14px}
+.ring-card.active{transform:scale(1.14);box-shadow:0 20px 50px rgba(0,0,0,0.6)}
+.ring-card.inactive{opacity:0.85;transform:scale(0.92)}
+
+/* Casino compact */
+#casino .ring-card{width:130px;height:92px}
+@media (max-width:920px){ :root{--card-w:120px} .brand h1{font-size:20px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <!-- logo.png must be in the same repo root -->
+    <a href="logo.png" target="_blank" rel="noopener">
+      <img src="logo.png" alt="SuryaBets logo">
+      <div>
+        <h1>SuryaBets</h1>
+        <div class="small">Sports & Casino Universe</div>
+      </div>
+    </a>
+  </div>
+
+  <button class="claim-btn">$500 Bonus 💰</button>
+</header>
+
+<main>
+  <!-- hero.png must be in the same repo root -->
+  <div class="hero">
+    <a href="hero.png" target="_blank" rel="noopener">
+      <img src="hero.png" alt="Promo banner">
+    </a>
+  </div>
+
+  <section id="sports" class="section">
+    <div class="section-head">
+      <h2>Sports ⚽</h2><div class="small">Live & top leagues</div>
+    </div>
+    <div class="ring-wrap" id="sportsWrap"><div class="ring-track" id="sportsTrack"></div></div>
+  </section>
+
+  <section id="casino" class="section">
+    <div class="section-head">
+      <h2>Casino 💎</h2><div class="small">Classic games</div>
+    </div>
+    <div class="ring-wrap" id="casinoWrap"><div class="ring-track" id="casinoTrack"></div></div>
+  </section>
+</main>
+
+<script>
+/* Data */
+const sportsBase = [
+  'Cricket 🏏','Baseball ⚾','Basketball 🏀','Football ⚽','Kabaddi 🤼','Hockey 🏑','Tennis 🎾','Volleyball 🏐','Ice hockey 🏒','Racing 🏎️'
+].map((title,i)=>({ id:'s'+i, title, icon:title }));
+
+const casinoBase = [
+  'Roulette 🎡','Blackjack ♠️','Slots 🎰','Poker ♣️','Baccarat','Jackpot 💰','Dice 🎲','Aviator ✈️','Dragon & Tiger 🐉','3 Patti'
+].map((title,i)=>({ id:'c'+i, title, icon:title }));
+
+/* Build ring carousel (seamless) */
+function buildRingCarousel({ wrapId, baseItems, speedMs = 2000 }) {
+  const wrap = document.getElementById(wrapId);
+  const track = wrap.querySelector('.ring-track');
+  track.innerHTML = '';
+  const copies = 3; // tripled
+  const items = [];
+  for (let c=0;c<copies;c++) baseItems.forEach(it => items.push(it));
+  items.forEach((it, idx) => {
+    const div = document.createElement('div');
+    div.className = 'ring-card';
+    div.dataset.idx = idx;
+    div.innerHTML = `<div class="icon">${it.icon}</div><h3>${it.title}</h3>`;
+    track.appendChild(div);
+  });
+  const cards = Array.from(track.children);
+  const origLen = baseItems.length;
+  let currentIndex = origLen; // middle copy start
+  function centerIndex(i, noTransition=false){
+    if(noTransition) track.style.transition = 'none'; else track.style.transition = '';
+    const card = cards[i];
+    const wrapCenter = wrap.clientWidth/2;
+    const cardCenter = card.offsetLeft + card.clientWidth/2;
+    const translateX = cardCenter - wrapCenter;
+    track.style.transform = `translateX(${-translateX}px)`;
+    cards.forEach((c, k)=>{ c.classList.remove('active','inactive'); if(k===i) c.classList.add('active'); else c.classList.add('inactive'); });
+    const firstMiddle = origLen, lastMiddle = origLen*2 - 1;
+    if(i < firstMiddle || i > lastMiddle){
+      const rel = ((i - origLen) % origLen + origLen) % origLen;
+      const newIndex = origLen + rel;
+      setTimeout(()=>{ track.style.transition='none'; const c2 = cards[newIndex]; const c2center = c2.offsetLeft + c2.clientWidth/2; track.style.transform = `translateX(${- (c2center - wrapCenter)}px)`; cards.forEach((c,k)=>{ c.classList.remove('active','inactive'); if(k===newIndex) c.classList.add('active'); else c.classList.add('inactive'); }); currentIndex=newIndex; setTimeout(()=>track.style.transition='',30); },260);
+    } else { currentIndex = i; }
+  }
+  setTimeout(()=> centerIndex(currentIndex,true),20);
+  let timer = setInterval(()=> centerIndex(currentIndex+1,false), speedMs);
+  wrap.addEventListener('mouseenter', ()=> clearInterval(timer));
+  wrap.addEventListener('mouseleave', ()=> { clearInterval(timer); timer = setInterval(()=> centerIndex(currentIndex+1,false), speedMs); });
+  track.addEventListener('click', (ev) => { const card = ev.target.closest('.ring-card'); if(!card) return; centerIndex(Number(card.dataset.idx), false); });
+  return { destroy(){ clearInterval(timer); } };
+}
+
+/* Init */
+document.addEventListener('DOMContentLoaded', ()=> {
+  window.sportsCarousel = buildRingCarousel({ wrapId:'sportsWrap', baseItems: sportsBase, speedMs:2000 });
+  window.casinoCarousel = buildRingCarousel({ wrapId:'casinoWrap', baseItems: casinoBase, speedMs:2200 });
+});
+</script>
+</body>
+</html>
