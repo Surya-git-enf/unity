@@ -43,11 +43,30 @@
       margin-bottom: 35px;
     }
 
-    .lock-icon-svg {
-      width: 28px;
-      height: 28px;
-      fill: #ffffff;
-      opacity: 0.9;
+    /* New styles for the complex lock SVG */
+    .complex-lock-svg {
+        width: 50px; /* Adjusted size */
+        height: 80px; /* Adjusted size */
+        opacity: 0.9;
+    }
+    
+    .lock-body {
+        fill: #ffffff; /* White fill */
+        stroke: none;
+    }
+
+    .lock-shackle {
+        fill: none;
+        stroke: #ffffff; /* White stroke */
+        stroke-width: 8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+    
+    /* Keyhole detail colors */
+    .keyhole-detail {
+        fill: #07080b; /* Dark fill for keyhole */
+        opacity: 0.9;
     }
 
     .unlock-button {
@@ -90,14 +109,26 @@
 <body>
   <div class="container">
     <div class="vibrant-rectangle">
-      <svg
-        class="lock-icon-svg"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3-9H9V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2z"
-        />
+      <svg class="complex-lock-svg" viewBox="0 0 120 150" xmlns="http://www.w3.org/2000/svg">
+          <path class="lock-shackle"
+                d="M35 55 V35 A25 25 0 0 1 95 45 V55"
+                fill="none"
+                stroke="#ffffff"
+                stroke-width="8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                opacity="0.9"/>
+          
+          <rect class="lock-body" 
+                x="25" y="55" 
+                width="80" height="75" 
+                rx="10" ry="10"
+                fill="#ffffff" 
+                opacity="0.9"/>
+          
+          <circle cx="65" cy="90" r="6" class="keyhole-detail"/>
+          
+          <rect x="62" y="90" width="6" height="15" rx="2" class="keyhole-detail"/>
       </svg>
     </div>
 
@@ -119,3 +150,4 @@
     </button>
   </div>
 </body>
+</html>
