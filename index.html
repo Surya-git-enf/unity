@@ -1,153 +1,356 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Unlock Page</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TOSS KING — Preview (shimmer + float)</title>
   <style>
-    body {
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: linear-gradient(180deg, #ffffff 0%, #fff3e0 100%);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    :root{
+      --accent:#1e9bff;
+      --max-layout: 920px;
+      --card-radius:18px;
+      --ease:cubic-bezier(.22,.9,.3,1);
+      --bg-dark: #0b2233;
+    }
+
+    /* --- Page baseline --- */
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.32), rgba(0,0,0,0.65)),
+        url('bg.png') center/cover no-repeat fixed;
+      background-color: var(--bg-dark);
+      color: #fff;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      display:flex;
+      justify-content:center;
+      padding: 18px 12px 40px;
     }
 
     .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px;
-      border-radius: 25px;
-      background: #fff;
-      box-shadow: 0 15px 40px rgba(24, 76, 230, 0.9);
-      max-width: 320px;
+      width: min(92vw, var(--max-layout));
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:center;
+      position:relative;
     }
 
-    .vibrant-rectangle {
-      background: linear-gradient(
-        10deg,
-        #071589,
-        #0b1420,
-        #f85584
-      );
-      width: 270px;
-      height: 170px;
-      border-radius: 15px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 10px 25px rgba(255, 133, 148, 0.9);
-      margin-bottom: 35px;
+    /* sticky capsule header */
+    header.site-header {
+      width:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding-top:6px;
+      pointer-events: auto;
+      position:sticky;
+      top:18px;
+      z-index:60;
+      margin-bottom:6px;
     }
 
-    /* New styles for the complex lock SVG */
-    .complex-lock-svg {
-        width: 50px; /* Adjusted size */
-        height: 80px; /* Adjusted size */
-        opacity: 0.9;
-    }
-    
-    .lock-body {
-        fill: #ffffff; /* White fill */
-        stroke: none;
-    }
-
-    .lock-shackle {
-        fill: none;
-        stroke: #ffffff; /* White stroke */
-        stroke-width: 8;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-    
-    /* Keyhole detail colors */
-    .keyhole-detail {
-        fill: #07080b; /* Dark fill for keyhole */
-        opacity: 0.9;
+    .capsule {
+      width: min(92vw, var(--max-layout));
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 14px;
+      border-radius:999px;
+      background: rgba(0,0,0,0.82);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.04);
     }
 
-    .unlock-button {
-      background: linear-gradient(
-        90deg,
-        #ffb6c1,
-        #ffa866,
-        #fd822f
-      );
-      color: #fff;
-      border: none;
-      padding: 14px 40px;
-      border-radius: 14px;
-      font-size: 18px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 8px 15px rgba(253, 130, 47, 0.6);
-      transition: background-color 0.3s ease, transform 0.25s ease;
-      user-select: none;
+    .capsule .left { display:flex; align-items:center; gap:12px; min-width:0; }
+    .tg-icon { width:36px; height:36px; border-radius:10px; background:#fff; object-fit:cover; display:block; flex-shrink:0; }
+    .capsule .label { color:#fff; font-weight:700; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+    .capsule .download {
+      border:0;
+      background: linear-gradient(90deg,#33b8ff,#1a7fd9);
+      color:#fff;
+      padding:10px 22px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow: 0 10px 28px rgba(0,102,255,0.12);
+      min-width:150px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .capsule .download:active{ transform:scale(.985); }
+    .capsule .download::after{
+      content:'';
+      position:absolute;
+      top:-40%;
+      left:-30%;
+      width:26%;
+      height:180%;
+      transform: rotate(25deg) translateX(-10%);
+      background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.20) 50%, rgba(255,255,255,0) 100%);
+      opacity:0;
+      transition: opacity 220ms var(--ease), transform 700ms var(--ease);
+      pointer-events:none;
+      will-change:transform,opacity;
+    }
+    .capsule .download:hover::after{
+      opacity:1;
+      transform: translateX(360%) rotate(25deg);
+      transition: transform 850ms var(--ease), opacity 180ms;
     }
 
-    .unlock-button:hover {
-      background-color: #333;
-      transform: translateY(-3px);
-      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.35);
+    main.site-main {
+      width:100%;
+      display:flex;
+      justify-content:center;
+      padding: 6px 0 20px;
     }
 
-    .button-lock-svg {
-      width: 24px;
-      height: 24px;
-      fill: #fff;
-      margin-right: 12px;
-      filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+    .card {
+      width:88%;
+      background: linear-gradient(180deg, rgba(0,0,0,0.72), rgba(0,0,0,0.45));
+      border-radius: var(--card-radius);
+      padding:20px 18px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      position:relative;
+      box-shadow: 0 8px 28px rgba(255,255,255,0.5);
+      overflow:visible;
+      transform-origin:center;
+      border: 1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(4px);
+      will-change: transform;
+      /* entrance + floating by default (with delay) so previewers that don't fire load still show float */
+      animation: cardEntrance 520ms var(--ease) both, cardFloat 7200ms ease-in-out 800ms infinite;
+    }
+
+    .card::before{
+      content:'';
+      position:absolute;
+      inset:-12px;
+      border-radius: calc(var(--card-radius) + 6px);
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.12), rgba(255,255,255,0.00) 34%);
+      filter: blur(14px);
+      pointer-events:none;
+      z-index:-1;
+    }
+
+    @keyframes cardEntrance {
+      0% { transform: translateY(14px) scale(.996); opacity:0; }
+      60% { transform: translateY(-4px) scale(1.01); opacity:1; }
+      100% { transform: translateY(0) scale(1); opacity:1; }
+    }
+    @keyframes cardFloat {
+      0% { transform: translateY(0px) scale(1); }
+      25% { transform: translateY(-6px) scale(1.003); }
+      50% { transform: translateY(0px) scale(1); }
+      75% { transform: translateY(-4px) scale(1.002); }
+      100% { transform: translateY(0px) scale(1); }
+    }
+
+    .avatar {
+      width:84px; height:84px; border-radius:50%; overflow:hidden; margin-top:-8px;
+      border:3px solid rgba(255,255,255,0.06);
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.03), rgba(0,0,0,0.12));
+    }
+    .avatar img { width:100%; height:100%; object-fit:cover; display:block; }
+
+    h1 { color:#fff; font-size:22px; margin:12px 0 6px; font-weight:800; letter-spacing:0.2px; }
+    .subs { font-size:13px; color: rgba(255,255,255,0.86); margin-bottom:8px; font-weight:600; }
+
+    .line { color: rgba(255,255,255,0.95); font-size:20px; margin:8px 0; line-height:1.3; font-weight:600; }
+    .bigtext { color: rgba(255,255,255,0.9); font-size:20px; line-height:1.45; margin-bottom:18px; font-weight:600; }
+
+    /* JOIN button with continuous shimmering shine */
+    .join-btn {
+      position:relative;
+      display:inline-block;
+      background: linear-gradient(90deg,#39b3ff,#1383dc);
+      color:#fff;
+      padding:12px 28px;
+      border-radius:30px;
+      font-weight:800;
+      text-decoration:none;
+      box-shadow: 0 18px 44px rgba(0,120,220,0.18), 0 0 18px rgba(20,140,255,0.06) inset;
+      transform-origin:center;
+      overflow:hidden;
+      z-index:0;
+    }
+    .join-btn:active { transform:scale(.985); }
+
+    /* moving highlight layer */
+    .join-btn::after{
+      content:'';
+      position:absolute;
+      left:-40%;
+      top:-20%;
+      width:20%;
+      height:190%;
+      transform: rotate(10deg);
+      background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.58) 50%, rgba(255,255,255,0) 100%);
+      opacity:0.0;
+      animation: shineMove 1.5s linear infinite;
+      pointer-events:none;
+      mix-blend-mode: overlay;
+      filter: blur(0.4px);
+    }
+
+    /* Add subtle pulse so shimmer feels alive */
+    .join-btn::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:30px;
+      box-shadow: 0 10px 32px rgba(0,120,220,0.08);
+      opacity:1;
+      transition: box-shadow 280ms var(--ease), transform 160ms var(--ease);
+      pointer-events:none;
+    }
+
+    @keyframes shineMove{
+      0% { left:-40%; opacity:0; }
+      10% { opacity:0.6; }
+      45% { left:120%; opacity:0.95; }
+      70% { opacity:0.2; }
+      100% { left:160%; opacity:0; }
+    }
+
+    /* hover intensify */
+    .join-btn:hover::after{ animation-duration:1.8s; opacity:1; }
+    .join-btn:hover::before{ box-shadow: 0 20px 48px rgba(0,120,220,0.18); transform: translateY(-2px); }
+
+    .invitation { color: rgba(255,255,255,0.68); font-size:13px; margin-top:12px; }
+
+    .divider { width:86%; height:1px; background: rgba(255,255,255,0.06); margin:22px auto 10px; border-radius:2px; }
+    .disc-heading { width:86%; text-align:left; margin:0 auto 6px; font-size:13px; color: rgba(255,255,255,0.9); font-weight:800; }
+
+    .disclaimer {
+      width:86%;
+      margin:0 auto 6px;
+      font-size:13px;
+      color: rgba(255,255,255,0.88);
+      line-height:1.45;
+      text-align: center;
+      font-weight:400;
+    }
+
+    footer.site-footer {
+      width:100%;
+      padding:12px 0 30px;
+      display:flex;
+      justify-content:center;
+      color: rgba(255,255,255,0.7);
+      font-size:13px;
+    }
+
+    @media (max-width:460px){
+      .capsule { padding:8px 10px; }
+      .capsule .download { padding:8px 14px; font-size:13px; min-width:130px; }
+      .card { padding:18px 12px; }
+      .avatar { width:72px; height:72px; }
+      .join-btn { padding:10px 18px; }
+      h1 { font-size:20px; }
+      .join-btn::after{ top:-40%; }
+    }
+
+    /* respects reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .card { animation:none; }
+      .join-btn::after{ animation:none; opacity:0.45; }
+      .join-btn::before{ transition:none; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="vibrant-rectangle">
-      <svg class="complex-lock-svg" viewBox="0 0 120 150" xmlns="http://www.w3.org/2000/svg">
-          <path class="lock-shackle"
-                d="M35 55 V35 A25 25 0 0 1 95 45 V55"
-                fill="none"
-                stroke="#ffffff"
-                stroke-width="8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                opacity="0.9"/>
-          
-          <rect class="lock-body" 
-                x="25" y="55" 
-                width="80" height="75" 
-                rx="10" ry="10"
-                fill="#ffffff" 
-                opacity="0.9"/>
-          
-          <circle cx="65" cy="90" r="6" class="keyhole-detail"/>
-          
-          <rect x="62" y="90" width="6" height="15" rx="2" class="keyhole-detail"/>
-      </svg>
-    </div>
+    <header class="site-header" role="banner" aria-label="Top header">
+      <div class="capsule" aria-hidden="false">
+        <div class="left">
+          <img src="telegram.png" alt="Telegram" class="tg-icon">
+          <div class="label">Telegram</div>
+        </div>
 
-    <button
-      class="unlock-button"
-      onclick="window.location.href='https://payments.cashfree.com/forms?code=dnoB'"
-      type="button"
-    >
-      <svg
-        class="button-lock-svg"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6-5c1.66 0 3 1.34 3 3v2H9V6c0-1.66 1.34-3 3-3zM18 20H6V10h12v10z"
-        />
-      </svg>
-      Unlock Toss $600
-    </button>
+        <button class="download" id="downloadBtn" aria-label="Download Telegram">DOWNLOAD TELEGRAM</button>
+      </div>
+    </header>
+
+    <main class="site-main" role="main">
+      <article class="card" id="mainCard" aria-labelledby="title">
+        <div class="avatar"><img src="icon.png" alt="channel icon"></div>
+
+        <h1 id="title">TOSS KING NANI🤫</h1>
+        <div class="subs">1000 subscribers</div>
+
+        <div class="line">I am not a fixer — cricket is my life ❤️✌🏿</div>
+        <div class="line">CRICKET 🏏 IS MY PASSION</div>
+
+        <div class="bigtext">
+          5 years of experience in this field with above 95% accuracy.<br>
+          Please share and support my channel ❤️
+        </div>
+
+        <a class="join-btn" id="joinBtn" href="https://t.me/TELUGUIPLGURU" target="_blank" rel="noopener noreferrer">JOIN CHANNEL</a>
+
+        <div class="invitation">You are invited to the channel — click above to join.</div>
+
+        <div class="divider" aria-hidden="true"></div>
+        <div class="disc-heading">Disclaimer:</div>
+        <div class="disclaimer">
+          This channel shares cricket updates and analysis for fans. It does not provide or promote betting or gambling, and no outcomes are guaranteed. Joining or acting on information is at your own discretion—please verify independently and act responsibly.
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      © Toss King — Preview
+    </footer>
   </div>
+
+  <script>
+    // Play Store link for download button
+    document.getElementById('downloadBtn').addEventListener('click', function () {
+      window.open('https://play.google.com/store/apps/details?id=org.telegram.messenger', '_blank', 'noopener');
+    });
+
+    // Join button intent fallback (keeps previous robust behavior)
+    document.getElementById('joinBtn').addEventListener('click', function (e) {
+      e.preventDefault();
+      const httpsUrl = 'https://t.me/TELUGUIPLGURU';
+      const username = 'TELUGUIPLGURU';
+      const ua = navigator.userAgent || '';
+      const isAndroid = /Android/i.test(ua);
+      const isChrome = /Chrome/i.test(ua);
+
+      if (isAndroid && isChrome) {
+        const intentUrl = 'intent://t.me/' + username + '#Intent;package=org.telegram.messenger;scheme=https;end';
+        window.location = intentUrl;
+        setTimeout(() => {
+          if (document.visibilityState === 'visible') {
+            window.open(httpsUrl, '_blank', 'noopener');
+          }
+        }, 700);
+        return;
+      }
+
+      try { window.open(httpsUrl, '_blank', 'noopener'); }
+      catch (err) { window.location.href = httpsUrl; }
+    });
+
+    // No JS needed to start floating or shimmer — CSS handles it. Keep a small safety hook for slow previews.
+    // If you want, you can toggle the float by removing the card's animation via JS for low-end devices.
+  </script>
 </body>
 </html>
