@@ -4,13 +4,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TOSS KING — Preview (shimmer + float) — animated (fixed)</title>
+
+  <!-- preload background image so browser fetches it ASAP -->
+  <link rel="preload" href="bg.png" as="image">
+
   <style>
     :root{
       --accent: #1e9bff;
       --max-layout: 920px;
       --card-radius: 18px;
       --ease: cubic-bezier(.22,.9,.3,1);
-      --bg-dark: #0b2233;
+      --bg-dark: #071827; /* deep blue fallback (used while image repaints) */
       --card-width: 270px; /* change to 250px if needed */
     }
 
@@ -18,19 +22,52 @@
     html,body{
       height:100%;
       margin:0;
+      padding:0;
       font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      background: url('bg.png') center/cover no-repeat fixed;
-      
+
+      /* solid deep-blue fallback color (prevents white flash) */
+      background-color: var(--bg-dark);
       color: #fff;
+
+      /* ensure no white gaps on overscroll in some browsers */
+      overscroll-behavior-y: contain;
+
       -webkit-overflow-scrolling: touch;
       scroll-behavior: smooth;
       display:flex;
       justify-content:center;
       padding: 18px 12px 40px;
+      position:relative;
+      z-index:0;
+      -webkit-transform: translateZ(0); /* promote to GPU layer */
     }
 
+    /*
+      Use a fixed pseudo-element for the background image. This avoids
+      repaint gaps (white flashes) during scrolling and lets the page
+      keep the deep-blue fallback while the image paints.
+    */
+    body::before{
+      content: "";
+      position: fixed;
+      inset: 0;                     /* top:0 right:0 bottom:0 left:0 */
+      z-index: -100;                /* behind everything */
+      background-image: url('bg.png');
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed; /* kept for parity on desktop */
+      will-change: transform, opacity;
+      -webkit-transform: translateZ(0); /* force compositing */
+      backface-visibility: hidden;
+      /* small dark overlay to remove harsh edges and blend with --bg-dark */
+      background-color: rgba(7,24,39,0.15);
+      background-blend-mode: overlay;
+    }
+
+    /* container & rest of styles — unchanged except kept minimal edits */
     .container {
       width: min(92vw, var(--max-layout));
       display:flex;
@@ -51,6 +88,11 @@
       top:2px;
       z-index:60;
       margin-bottom:6px;
+      /* make header transparent as you asked */
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
     }
 
     .capsule {
@@ -127,7 +169,7 @@
 
     /* =======================
        Card: same background image painted onto the card (not transparent)
-       Layer order (top -> bottom): dark gradient overlay, then telegram.png image
+       Layer order (top -> bottom): dark gradient overlay, then bg.png image
        ======================= */
     .card {
       width: var(--card-width);
@@ -144,15 +186,12 @@
       position:relative;
       overflow:visible;
       transform-origin:center;
-   /* crisp white border */
-      box-shadow: 0 2px 15px rgba(255,255, 255,0.8);
+      box-shadow: 0 2px 15px rgba(255,255,255,0.08);
       will-change: transform;
-      /* card entrance + continuous gentle float */
       animation: cardEntrance 520ms var(--ease) both, cardFloat 7200ms ease-in-out 800ms infinite;
       isolation: isolate;
     }
 
-    /* white halo / glow outside card */
     .card::after{
       content:'';
       position:absolute;
@@ -164,7 +203,6 @@
       filter: blur(6px);
     }
 
-    /* === Card animations === */
     @keyframes cardEntrance {
       0% { transform: translateY(20px) scale(.998); opacity:0; }
       60% { transform: translateY(-6px) scale(1.004); opacity:1; }
@@ -178,14 +216,12 @@
       100% { transform: translateY(0px); }
     }
 
-    /* Element entrance (fade + translate up) ONLY — no repeat bobbing */
     @keyframes appearUp {
       0% { opacity:0; transform: translateY(18px); }
       60% { opacity:1; transform: translateY(-4px); }
       100% { opacity:1; transform: translateY(0); }
     }
 
-    /* Default inner elements hidden until their single appearUp runs */
     .avatar,
     .card h1,
     .subs,
@@ -196,10 +232,8 @@
     .divider,
     .disclaimer {
       opacity:0;
-      /* only the appearUp animation; no continuous floating */
     }
 
-    /* Avatar: entrance only */
     .avatar {
       width:200px; height:200px; border-radius:50%; overflow:hidden; margin-top:-8px;
       border:3px solid rgba(255,255,255,0.06);
@@ -343,6 +377,8 @@
       h1 { font-size:16px; }
       .join-btn::after{ top:-40%; }
       .card::after { inset: -10px; box-shadow: 0 8px 30px 8px rgba(255,255,255,0.08); }
+      /* mobile browsers often ignore fixed backgrounds; pseudo-element still helps */
+      body::before { background-attachment: scroll; }
     }
 
     /* reduced motion: remove motion if user prefers reduced motion */
