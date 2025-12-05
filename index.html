@@ -3,27 +3,25 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TOSS KING — Preview (shimmer + float) — fixed card 250px</title>
+  <title>TOSS KING — Preview (shimmer + float) — animated (fixed)</title>
   <style>
     :root{
-      --accent:#1e9bff;
+      --accent: #1e9bff;
       --max-layout: 920px;
-      --card-radius:18px;
-      --ease:cubic-bezier(.22,.9,.3,1);
+      --card-radius: 18px;
+      --ease: cubic-bezier(.22,.9,.3,1);
       --bg-dark: #0b2233;
-      --card-width: 300px; /* <-- change this to adjust card width */
+      --card-width: 280px; /* change to 250px if needed */
     }
 
-    /* --- Page baseline --- */
+    /* ---------- Page baseline ---------- */
     html,body{
       height:100%;
       margin:0;
       font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,0.32), rgba(0,0,0,0.65)),
-        url('bg.png') center/cover no-repeat fixed;
+      background: url('telegram.png') center/cover no-repeat fixed;
       background-color: var(--bg-dark);
       color: #fff;
       -webkit-overflow-scrolling: touch;
@@ -42,27 +40,24 @@
       position:relative;
     }
 
-    /* sticky capsule header (full-bleed) */
     header.site-header {
-      width:100%;            /* full width across viewport */
+      width:100%;
       left:0;
       display:flex;
       justify-content:center;
       align-items:center;
       padding-top:6px;
-      pointer-events: auto;
       position:sticky;
       top:18px;
       z-index:60;
       margin-bottom:6px;
     }
 
-    /* capsule fills the header area but its inner content is constrained by .inner */
     .capsule {
       width:100%;
       display:flex;
-      justify-content:center; /* center the inner group */
-      padding:10px 0;         /* vertical padding - horizontal controlled in .inner */
+      justify-content:center;
+      padding:10px 0;
       background: rgba(0,0,0,0.1);
       box-shadow: 0 8px 22px rgba(0,0,0,0.35);
       backdrop-filter: blur(6px);
@@ -72,7 +67,6 @@
       border: 1px solid rgba(255,255,255,0.02);
     }
 
-    /* inner keeps the previous max width behavior for content alignment */
     .capsule .inner {
       width: min(92vw, var(--max-layout));
       display:flex;
@@ -131,71 +125,120 @@
       padding: 6px 0 20px;
     }
 
-    /* Card fixed width (250px) and centered */
+    /* =======================
+       Card: same background image painted onto the card (not transparent)
+       Layer order (top -> bottom): dark gradient overlay, then telegram.png image
+       ======================= */
     .card {
-      width: var(--card-width); /* fixed width */
-      max-width: 100%;         /* never overflow container */
-      background: linear-gradient(180deg, rgba(0,0,0,0.72), rgba(0,0,0,0.45));
+      width: var(--card-width);
+      max-width: 100%;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.72), rgba(0,0,0,0.45)),
+        url('telegram.png') center/cover no-repeat fixed;
       border-radius: var(--card-radius);
-      padding:20px 18px;
+      padding:22px 20px;
       display:flex;
       flex-direction:column;
       align-items:center;
       text-align:center;
       position:relative;
-      box-shadow: 0 8px 28px rgba(255,255,255,0.7);
       overflow:visible;
       transform-origin:center;
-      border: 1px solid rgba(255,255,255,0.03);
-      backdrop-filter: blur(4px);
+   /* crisp white border */
+      box-shadow: 0 2px 15px rgba(255,255, 255,0.8);
       will-change: transform;
+      /* card entrance + continuous gentle float */
       animation: cardEntrance 520ms var(--ease) both, cardFloat 7200ms ease-in-out 800ms infinite;
+      isolation: isolate;
     }
 
-    .card::before{
+    /* white halo / glow outside card */
+    .card::after{
       content:'';
       position:absolute;
-      inset:-12px;
-      border-radius: calc(var(--card-radius) + 6px);
-      background: radial-gradient(ellipse at center, rgba(255,255,255,0.12), rgba(255,255,255,0.00) 34%);
-      filter: blur(14px);
+      inset:-14px;
+      border-radius: calc(var(--card-radius) + 14px);
       pointer-events:none;
+      box-shadow: 0 8px 40px 10px rgba(255,255,255,0.08), 0 2px 12px 2px rgba(255,255,255,0.06);
       z-index:-1;
+      filter: blur(6px);
     }
 
+    /* === Card animations === */
     @keyframes cardEntrance {
-      0% { transform: translateY(14px) scale(.996); opacity:0; }
-      60% { transform: translateY(-4px) scale(1.01); opacity:1; }
+      0% { transform: translateY(20px) scale(.998); opacity:0; }
+      60% { transform: translateY(-6px) scale(1.004); opacity:1; }
       100% { transform: translateY(0) scale(1); opacity:1; }
     }
     @keyframes cardFloat {
-      0% { transform: translateY(0px) scale(1); }
-      25% { transform: translateY(-6px) scale(1.003); }
-      50% { transform: translateY(0px) scale(1); }
-      75% { transform: translateY(-4px) scale(1.002); }
-      100% { transform: translateY(0px) scale(1); }
+      0% { transform: translateY(0px); }
+      25% { transform: translateY(-6px); }
+      50% { transform: translateY(0px); }
+      75% { transform: translateY(-4px); }
+      100% { transform: translateY(0px); }
     }
 
+    /* Element entrance (fade + translate up) ONLY — no repeat bobbing */
+    @keyframes appearUp {
+      0% { opacity:0; transform: translateY(18px); }
+      60% { opacity:1; transform: translateY(-4px); }
+      100% { opacity:1; transform: translateY(0); }
+    }
+
+    /* Default inner elements hidden until their single appearUp runs */
+    .avatar,
+    .card h1,
+    .subs,
+    .line,
+    .bigtext,
+    .join-btn,
+    .invitation,
+    .divider,
+    .disclaimer {
+      opacity:0;
+      /* only the appearUp animation; no continuous floating */
+    }
+
+    /* Avatar: entrance only */
     .avatar {
       width:200px; height:200px; border-radius:50%; overflow:hidden; margin-top:-8px;
       border:3px solid rgba(255,255,255,0.06);
       background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.03), rgba(0,0,0,0.12));
+      animation: appearUp 1000ms var(--ease) 620ms both;
+      will-change: transform, opacity;
     }
     .avatar img { width:100%; height:100%; object-fit:cover; display:block; }
 
-    h1 { color:#fff; font-size:20px; margin:25px 0 16px; font-weight:800; letter-spacing:0.2px; }
-    .subs { font-size:12px; color: rgba(255,255,255,0.6); margin-bottom:8px; font-weight:600; }
+    .card h1 {
+      color:#fff; font-size:20px; margin:18px 0 10px; font-weight:800; letter-spacing:0.2px;
+      animation: appearUp 1000ms var(--ease) 760ms both;
+      will-change: transform, opacity;
+    }
 
-    .line { color: rgba(255,255,255,0.95); font-size:20px; margin:6px 0; line-height:2; font-weight:600; }
-    .bigtext { color: rgba(255,255,255,0.9); font-size:20px; line-height:2; margin-bottom:18px; font-weight:600; }
+    .subs {
+      font-size:12px; color: rgba(255,255,255,0.6); margin-bottom:8px; font-weight:600;
+      animation: appearUp 1000ms var(--ease) 820ms both;
+      will-change: transform, opacity;
+    }
 
-    /* JOIN button with continuous shimmering shine */
+    .line {
+      color: rgba(255,255,255,0.95); font-size:20px; margin:6px 0; line-height:2; font-weight:600;
+      animation: appearUp 1000ms var(--ease) 900ms both;
+      will-change: transform, opacity;
+    }
+
+    .bigtext {
+      color: rgba(255,255,255,0.9); font-size:20px; line-height:2; margin-bottom:18px; font-weight:600;
+      animation: appearUp 1000ms var(--ease) 980ms both;
+      will-change: transform, opacity;
+    }
+
     .join-btn {
       position:relative;
       display:inline-block;
       background: linear-gradient(90deg,#39b3ff,#1383dc);
       color:#fff;
-      padding:10px 16px;
+      padding:10px 18px;
       border-radius:30px;
       font-weight:800;
       text-decoration:none;
@@ -204,10 +247,11 @@
       overflow:hidden;
       z-index:0;
       font-size:20px;
+      animation: appearUp 1000ms var(--ease) 1100ms both;
+      will-change: transform, opacity;
     }
     .join-btn:active { transform:scale(.985); }
 
-    /* moving highlight layer */
     .join-btn::after{
       content:'';
       position:absolute;
@@ -223,8 +267,6 @@
       mix-blend-mode: overlay;
       filter: blur(0.4px);
     }
-
-    /* Add subtle pulse so shimmer feels alive */
     .join-btn::before{
       content:'';
       position:absolute;
@@ -235,7 +277,6 @@
       transition: box-shadow 280ms var(--ease), transform 160ms var(--ease);
       pointer-events:none;
     }
-
     @keyframes shineMove{
       0% { left:-40%; opacity:0; }
       10% { opacity:0.6; }
@@ -243,24 +284,45 @@
       70% { opacity:0.2; }
       100% { left:160%; opacity:0; }
     }
-
-    /* hover intensify */
     .join-btn:hover::after{ animation-duration:1.8s; opacity:1; }
     .join-btn:hover::before{ box-shadow: 0 20px 48px rgba(0,120,220,0.18); transform: translateY(-2px); }
 
-    .invitation { color: rgba(255,255,255,0.68); font-size:12px; margin-top:12px; }
+    .invitation {
+      color: rgba(255,255,255,0.68);
+      font-size:12px;
+      margin-top:12px;
+      animation: appearUp 520ms var(--ease) 1220ms both;
+      will-change: transform, opacity;
+    }
 
-    .divider { width:86%; height:1px; background: rgba(255,255,255,0.5); margin:22px auto 10px; border-radius:2px; }
-    .disc-heading { width:86%; text-align:left; margin:0 auto 6px; font-size:13px; color: rgba(255,255,255,0.9); font-weight:800; }
+    .divider {
+      width:86%;
+      height:1px;
+      background: rgba(255,255,255,0.12);
+      margin:22px auto 10px;
+      border-radius:2px;
+      animation: appearUp 520ms var(--ease) 1300ms both;
+    }
+
+    .disc-heading {
+      width:86%;
+      text-align:left;
+      margin:0 auto 6px;
+      font-size:13px;
+      color: rgba(255,255,255,0.9);
+      font-weight:800;
+      animation: appearUp 520ms var(--ease) 1360ms both;
+    }
 
     .disclaimer {
       width:86%;
       margin:0 auto 6px;
       font-size:12px;
-      color: rgba(255,255,255,0.88);
+      color: rgba(255,255,255,0.78);
       line-height:1.45;
       text-align: center;
       font-weight:400;
+      animation: appearUp 520ms var(--ease) 1420ms both;
     }
 
     footer.site-footer {
@@ -275,16 +337,30 @@
     @media (max-width:460px){
       .capsule .inner { padding:8px 10px; }
       .capsule .download { padding:8px 14px; font-size:13px; min-width:110px; }
-      .card { padding:16px 12px; }
+      .card { padding:16px 12px; width: min(92vw, 360px); }
       .avatar { width:72px; height:72px; }
-      .join-btn { padding:8px 12px; }
+      .join-btn { padding:8px 12px; font-size:16px; }
       h1 { font-size:16px; }
       .join-btn::after{ top:-40%; }
+      .card::after { inset: -10px; box-shadow: 0 8px 30px 8px rgba(255,255,255,0.08); }
     }
 
-    /* respects reduced motion */
+    /* reduced motion: remove motion if user prefers reduced motion */
     @media (prefers-reduced-motion: reduce) {
       .card { animation:none; }
+      .avatar,
+      .card h1,
+      .subs,
+      .line,
+      .bigtext,
+      .join-btn,
+      .invitation,
+      .divider,
+      .disclaimer {
+        animation:none;
+        opacity:1;
+        transform:none;
+      }
       .join-btn::after{ animation:none; opacity:0.45; }
       .join-btn::before{ transition:none; }
     }
@@ -343,7 +419,7 @@
       window.open('https://play.google.com/store/apps/details?id=org.telegram.messenger', '_blank', 'noopener');
     });
 
-    // Join button intent fallback (keeps previous robust behavior)
+    // Join button intent fallback
     document.getElementById('joinBtn').addEventListener('click', function (e) {
       e.preventDefault();
       const httpsUrl = 'https://t.me/TELUGUIPLGURU';
@@ -366,8 +442,6 @@
       try { window.open(httpsUrl, '_blank', 'noopener'); }
       catch (err) { window.location.href = httpsUrl; }
     });
-
-    // No JS needed to start floating or shimmer — CSS handles it. Keep a small safety hook for slow previews.
   </script>
 </body>
 </html>
