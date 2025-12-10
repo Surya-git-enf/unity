@@ -5,22 +5,18 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TOSS KING MAHI</title>
 
-  <!-- Preload big assets -->
-  <link rel="preload" as="image" href="bg.png">
-  <link rel="preload" as="image" href="icon.png">
-  <link rel="preload" as="image" href="icon.png">
-
   <style>
     :root{
-      --accent: #1e9bff;
+      --accent: #1e9bff;       /* keep accent for buttons */
       --max-layout: 920px;
       --card-radius: 18px;
       --ease: cubic-bezier(.22,.9,.3,1);
-      --bg-dark: #072233;
-      --card-width: 270px;
+      --bg-dark-1: #050608;   /* deep neutral dark */
+      --bg-dark-2: #0d1114;   /* slightly lighter for gradient */
+      --card-width: 320px;
     }
 
-    /* ---------- Page baseline ---------- */
+    /* ---------- Page baseline (NO blue anywhere) ---------- */
     html,body{
       height:100%;
       margin:0;
@@ -33,39 +29,9 @@
       display:flex;
       justify-content:center;
       padding: 18px 12px 40px;
-      background-color: var(--bg-dark); /* prevents white flash */
+      /* removed any image or blue tint — pure dark gradient */
+      background: linear-gradient(180deg, var(--bg-dark-1), var(--bg-dark-2));
       overflow-x:hidden;
-    }
-
-    /* Fullscreen background layers (placeholder + actual image) */
-    .bg-placeholder,
-    .bg-image {
-      position: fixed;
-      inset: 0;
-      z-index: -100;
-      pointer-events: none;
-      will-change: opacity, transform;
-    }
-
-    .bg-placeholder {
-      background: linear-gradient(180deg, #021824 0%, rgba(4,33,48,0.9) 50%, #072233 100%);
-      filter: blur(0.6px);
-    }
-
-    .bg-image {
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      opacity: 0;
-      transition: opacity 900ms var(--ease);
-      transform: translateZ(0);
-    }
-
-    body.bg-loaded .bg-image { opacity: 1; }
-
-    /* Mobile performance: avoid fixed attachment */
-    @media (max-width: 760px), (pointer: coarse) {
-      .bg-image, .bg-placeholder { background-attachment: scroll; }
     }
 
     /* ---------- Layout ---------- */
@@ -91,117 +57,90 @@
       margin-bottom:6px;
     }
 
+    /* Capsule top bar (icon + label + download) */
     .capsule {
       width:100%;
       display:flex;
       justify-content:center;
       padding:10px 0;
-      background: rgba(0,0,0,0.2);
-      box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+      background: rgba(255,255,255,0.02);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       border-bottom-left-radius: 12px;
       border-bottom-right-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.03);
     }
 
-    /* Capsule inner: keep layout stable */
     .capsule .inner {
       width: min(92vw, var(--max-layout));
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      padding:10px 14px;
+      padding:8px 12px;
       border-radius:999px;
-      background: rgba(0,0,0,0.18);
+      background: rgba(255,255,255,0.02);
     }
 
-    /* LEFT group: icon + label — keep them in one row and prevent wrapping */
+    /* LEFT group: icon + label — stay on one line */
     .capsule .left {
-      display: inline-flex;      /* prevents wrap and keeps them aligned */
-      align-items: center;
-      gap: 12px;
-      flex: 0 1 auto;
-      min-width: 0;              /* allows text-overflow to work inside flex */
-      white-space: nowrap;       /* keep icon and label on same line */
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      flex:0 1 auto;
+      min-width:0;
+      white-space:nowrap;
     }
 
-    /* Telegram icon: fixed size */
     .tg-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 30px;
-      object-fit: cover;
-      display: inline-block;
-      flex: 0 0 36px;            /* fixed box so text won't wrap under it */
-      vertical-align: middle;
-      background: #fff;
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      object-fit:cover;
+      display:inline-block;
+      flex:0 0 36px;
+      vertical-align:middle;
+      background:#fff; /* safe fallback if image missing */
     }
 
-    /* label: truncation with ellipsis as needed */
     .capsule .label {
       color:#fff;
       font-weight:700;
       font-size:14px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      display: inline-block;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      display:inline-block;
+      max-width:180px;
     }
 
     .capsule .download {
       border:0;
-      background: linear-gradient(90deg,#33b8ff,#1a7fd9);
+      background: linear-gradient(90deg,#33b8ff,#1a7fd9); /* keep button accent */
       color:#fff;
-      padding:10px 18px;
+      padding:8px 14px;
       border-radius:999px;
       font-weight:800;
       font-size:13px;
       cursor:pointer;
-      box-shadow: 0 10px 28px rgba(0,102,255,0.12);
-      min-width:120px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.6);
+      min-width:110px;
       text-align:center;
       position:relative;
       overflow:hidden;
     }
     .capsule .download:active{ transform:scale(.985); }
-    .capsule .download::after{
-      content:'';
-      position:absolute;
-      top:-40%;
-      left:-30%;
-      width:26%;
-      height:180%;
-      transform: rotate(25deg) translateX(-10%);
-      background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.20) 50%, rgba(255,255,255,0) 100%);
-      opacity:0;
-      transition: opacity 220ms var(--ease), transform 700ms var(--ease);
-      pointer-events:none;
-      will-change:transform,opacity;
-    }
-    .capsule .download:hover::after{
-      opacity:1;
-      transform: translateX(360%) rotate(25deg);
-      transition: transform 850ms var(--ease), opacity 180ms;
-    }
 
-    main.site-main {
-      width:100%;
-      display:flex;
-      justify-content:center;
-      padding: 6px 0 20px;
-    }
-
-    /* Card: paints the same image onto the card */
+    /* ---------- Card (NO blue glow / NO bright halo) ---------- */
     .card {
       width: var(--card-width);
       max-width: 100%;
+      /* neutral dark layered background — NO url/bg image and NO blue tint */
       background:
-        linear-gradient(180deg, rgba(0,0,0,0.72), rgba(0,0,0,0.45)),
-        url('bg.png') center/cover no-repeat;
+        linear-gradient(180deg, rgba(6,8,10,0.86), rgba(10,12,14,0.72));
       border-radius: var(--card-radius);
-      padding:22px 20px;
+      padding:20px 18px;
       display:flex;
       flex-direction:column;
       align-items:center;
@@ -209,26 +148,28 @@
       position:relative;
       overflow:visible;
       transform-origin:center;
-      box-shadow: 0 2px 15px rgba(255,255,255,0.6);
+      /* subtle darker shadow, no bright white glow */
+      box-shadow: 0 18px 40px rgba(0,0,0,0.7), 0 2px 6px rgba(0,0,0,0.6) inset;
       will-change: transform, opacity;
       animation: cardEntrance 520ms var(--ease) both, cardFloat 7200ms ease-in-out 800ms infinite;
       isolation: isolate;
     }
 
     .card::after{
+      /* remove bright halo; keep a subtle soft edge */
       content:'';
       position:absolute;
-      inset:-14px;
-      border-radius: calc(var(--card-radius) + 14px);
+      inset:-10px;
+      border-radius: calc(var(--card-radius) + 10px);
       pointer-events:none;
-      box-shadow: 0 8px 40px 10px rgba(255,255,255,0.05), 0 2px 12px 2px rgba(255,255,255,0.03);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       z-index:-1;
       filter: blur(6px);
     }
 
     @keyframes cardEntrance {
-      0% { transform: translateY(20px) scale(.998); opacity:0; }
-      60% { transform: translateY(-6px) scale(1.004); opacity:1; }
+      0% { transform: translateY(18px) scale(.998); opacity:0; }
+      60% { transform: translateY(-4px) scale(1.003); opacity:1; }
       100% { transform: translateY(0) scale(1); opacity:1; }
     }
     @keyframes cardFloat {
@@ -240,8 +181,8 @@
     }
 
     @keyframes appearUp {
-      0% { opacity:0; transform: translateY(18px); }
-      60% { opacity:1; transform: translateY(-4px); }
+      0% { opacity:0; transform: translateY(14px); }
+      60% { opacity:1; transform: translateY(-2px); }
       100% { opacity:1; transform: translateY(0); }
     }
 
@@ -258,53 +199,53 @@
     }
 
     .avatar {
-      width:200px; height:200px; border-radius:50%; overflow:hidden; margin-top:-8px;
-      border:3px solid rgba(255,255,255,0.06);
-      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.03), rgba(0,0,0,0.12));
-      animation: appearUp 1000ms var(--ease) 620ms both;
+      width:160px; height:160px; border-radius:50%; overflow:hidden; margin-top:-6px;
+      border:2px solid rgba(255,255,255,0.04);
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
+      animation: appearUp 900ms var(--ease) 520ms both;
       will-change: transform, opacity;
     }
     .avatar img { width:100%; height:100%; object-fit:cover; display:block; }
 
     .card h1 {
-      color:#fff; font-size:20px; margin:18px 0 10px; font-weight:800; letter-spacing:0.2px;
-      animation: appearUp 1000ms var(--ease) 760ms both;
+      color:#fff; font-size:20px; margin:14px 0 8px; font-weight:800; letter-spacing:0.2px;
+      animation: appearUp 900ms var(--ease) 660ms both;
       will-change: transform, opacity;
     }
 
     .subs {
       font-size:12px; color: rgba(255,255,255,0.6); margin-bottom:8px; font-weight:600;
-      animation: appearUp 1000ms var(--ease) 820ms both;
+      animation: appearUp 900ms var(--ease) 720ms both;
       will-change: transform, opacity;
     }
 
     .line {
-      color: rgba(255,255,255,0.95); font-size:20px; margin:6px 0; line-height:2; font-weight:600;
-      animation: appearUp 1000ms var(--ease) 900ms both;
+      color: rgba(255,255,255,0.95); font-size:18px; margin:6px 0; line-height:1.9; font-weight:600;
+      animation: appearUp 900ms var(--ease) 780ms both;
       will-change: transform, opacity;
     }
 
     .bigtext {
-      color: rgba(255,255,255,0.9); font-size:20px; line-height:2; margin-bottom:18px; font-weight:600;
-      animation: appearUp 1000ms var(--ease) 980ms both;
+      color: rgba(255,255,255,0.9); font-size:16px; line-height:1.9; margin:14px 0 18px; font-weight:500;
+      animation: appearUp 900ms var(--ease) 840ms both;
       will-change: transform, opacity;
     }
 
     .join-btn {
       position:relative;
       display:inline-block;
-      background: linear-gradient(90deg,#39b3ff,#1383dc);
+      background: linear-gradient(90deg,#39b3ff,#1383dc); /* keep CTA color */
       color:#fff;
       padding:10px 18px;
       border-radius:30px;
       font-weight:800;
       text-decoration:none;
-      box-shadow: 0 18px 44px rgba(0,120,220,0.18), 0 0 18px rgba(20,140,255,0.06) inset;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.6);
       transform-origin:center;
       overflow:hidden;
       z-index:0;
-      font-size:20px;
-      animation: appearUp 1000ms var(--ease) 1100ms both;
+      font-size:18px;
+      animation: appearUp 900ms var(--ease) 980ms both;
       will-change: transform, opacity;
     }
     .join-btn:active { transform:scale(.985); }
@@ -314,51 +255,40 @@
       position:absolute;
       left:-40%;
       top:-20%;
-      width:20%;
+      width:22%;
       height:190%;
       transform: rotate(10deg);
-      background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.58) 50%, rgba(255,255,255,0) 100%);
+      background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%);
       opacity:0.0;
       animation: shineMove 1.5s linear infinite;
       pointer-events:none;
       mix-blend-mode: overlay;
       filter: blur(0.4px);
     }
-    .join-btn::before{
-      content:'';
-      position:absolute;
-      inset:0;
-      border-radius:30px;
-      box-shadow: 0 10px 32px rgba(0,120,220,0.08);
-      opacity:1;
-      transition: box-shadow 280ms var(--ease), transform 160ms var(--ease);
-      pointer-events:none;
-    }
     @keyframes shineMove{
       0% { left:-40%; opacity:0; }
-      10% { opacity:0.6; }
-      45% { left:120%; opacity:0.95; }
-      70% { opacity:0.2; }
+      10% { opacity:0.5; }
+      45% { left:120%; opacity:0.9; }
+      70% { opacity:0.18; }
       100% { left:160%; opacity:0; }
     }
     .join-btn:hover::after{ animation-duration:1.8s; opacity:1; }
-    .join-btn:hover::before{ box-shadow: 0 20px 48px rgba(0,120,220,0.18); transform: translateY(-2px); }
 
     .invitation {
       color: rgba(255,255,255,0.68);
       font-size:12px;
       margin-top:12px;
-      animation: appearUp 520ms var(--ease) 1220ms both;
+      animation: appearUp 520ms var(--ease) 1120ms both;
       will-change: transform, opacity;
     }
 
     .divider {
       width:86%;
       height:1px;
-      background: rgba(255,255,255,0.12);
-      margin:22px auto 10px;
+      background: rgba(255,255,255,0.06);
+      margin:20px auto 10px;
       border-radius:2px;
-      animation: appearUp 520ms var(--ease) 1300ms both;
+      animation: appearUp 520ms var(--ease) 1180ms both;
     }
 
     .disc-heading {
@@ -368,18 +298,18 @@
       font-size:13px;
       color: rgba(255,255,255,0.9);
       font-weight:800;
-      animation: appearUp 520ms var(--ease) 1360ms both;
+      animation: appearUp 520ms var(--ease) 1240ms both;
     }
 
     .disclaimer {
       width:86%;
       margin:0 auto 6px;
       font-size:12px;
-      color: rgba(255,255,255,0.78);
+      color: rgba(255,255,255,0.72);
       line-height:1.45;
       text-align:center;
       font-weight:400;
-      animation: appearUp 520ms var(--ease) 1420ms both;
+      animation: appearUp 520ms var(--ease) 1300ms both;
     }
 
     footer.site-footer {
@@ -387,23 +317,22 @@
       padding:12px 0 30px;
       display:flex;
       justify-content:center;
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.55);
       font-size:13px;
     }
 
     @media (max-width:460px){
       .capsule .inner { padding:8px 10px; }
-      .capsule .download { padding:8px 14px; font-size:13px; min-width:110px; }
-      .card { padding:16px 12px; width: min(92vw, 360px); }
-      .avatar { width:72px; height:72px; }
+      .capsule .download { padding:8px 12px; font-size:13px; min-width:100px; }
+      .card { padding:14px 12px; width: min(92vw, 360px); }
+      .avatar { width:100px; height:100px; }
       .join-btn { padding:8px 12px; font-size:16px; }
-      h1 { font-size:16px; }
-      .join-btn::after{ top:-40%; }
-      .card::after { inset: -10px; box-shadow: 0 8px 30px 8px rgba(255,255,255,0.05); }
+      .card h1 { font-size:18px; }
       .tg-icon { width:28px; height:28px; flex: 0 0 28px; } /* shrink icon on tiny screens */
+      .capsule .label { max-width:110px; font-size:13px; }
     }
 
-    /* reduced motion */
+    /* reduced motion: remove motion if user prefers reduced motion */
     @media (prefers-reduced-motion: reduce) {
       .card { animation:none; }
       .avatar,
@@ -420,16 +349,10 @@
         transform:none;
       }
       .join-btn::after{ animation:none; opacity:0.45; }
-      .join-btn::before{ transition:none; }
-      .bg-image { transition:none !important; }
     }
   </style>
 </head>
 <body>
-  <!-- Background layers -->
-  <div class="bg-placeholder" aria-hidden="true"></div>
-  <div class="bg-image" aria-hidden="true"></div>
-
   <div class="container">
     <header class="site-header" role="banner" aria-label="Top header">
       <div class="capsule" aria-hidden="false">
@@ -505,37 +428,6 @@
       try { window.open(httpsUrl, '_blank', 'noopener'); }
       catch (err) { window.location.href = httpsUrl; }
     });
-
-    // Background preloader + crossfade
-    (function () {
-      const bgUrl = 'bg.png';
-      const bgEl = document.querySelector('.bg-image');
-      const placeholder = document.querySelector('.bg-placeholder');
-
-      bgEl.style.backgroundImage = 'url("' + bgUrl + '")';
-
-      const img = new Image();
-      let done = false;
-      const onLoaded = () => {
-        if (done) return;
-        done = true;
-        requestAnimationFrame(() => {
-          document.body.classList.add('bg-loaded');
-        });
-        setTimeout(() => {
-          if (placeholder && placeholder.parentNode) placeholder.parentNode.removeChild(placeholder);
-        }, 1200);
-      };
-
-      img.onload = onLoaded;
-      img.onerror = function () { onLoaded(); };
-      img.src = bgUrl;
-
-      // Safety fallback
-      setTimeout(() => {
-        if (!done) onLoaded();
-      }, 1800);
-    })();
   </script>
 </body>
 </html>
