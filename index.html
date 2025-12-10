@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TOSS KING MAHI</title>
 
-  <!-- Preload the large background to hint to the browser -->
+  <!-- Preload big assets -->
   <link rel="preload" as="image" href="bg.png">
   <link rel="preload" as="image" href="icon.png">
-  <link rel="preload" as="image" href="telegram.png">
+  <link rel="preload" as="image" href="icon.png">
 
   <style>
     :root{
@@ -16,7 +16,7 @@
       --max-layout: 920px;
       --card-radius: 18px;
       --ease: cubic-bezier(.22,.9,.3,1);
-      --bg-dark: #072233; /* darker fallback color to avoid white flash */
+      --bg-dark: #072233;
       --card-width: 270px;
     }
 
@@ -33,7 +33,7 @@
       display:flex;
       justify-content:center;
       padding: 18px 12px 40px;
-      background-color: var(--bg-dark); /* ensures no white flashes */
+      background-color: var(--bg-dark); /* prevents white flash */
       overflow-x:hidden;
     }
 
@@ -47,32 +47,28 @@
       will-change: opacity, transform;
     }
 
-    /* gradient "placeholder" while image is not ready */
     .bg-placeholder {
       background: linear-gradient(180deg, #021824 0%, rgba(4,33,48,0.9) 50%, #072233 100%);
       filter: blur(0.6px);
     }
 
-    /* the real image sits above the placeholder and fades in */
     .bg-image {
       background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
       opacity: 0;
       transition: opacity 900ms var(--ease);
-      transform: translateZ(0); /* GPU hint */
+      transform: translateZ(0);
     }
 
-    /* when preloader finishes we add this class (via JS) */
     body.bg-loaded .bg-image { opacity: 1; }
 
-    /* Mobile: avoid background-attachment:fixed due to performance issues */
-    /* We'll use the bg-image layers instead of relying on CSS fixed backgrounds */
+    /* Mobile performance: avoid fixed attachment */
     @media (max-width: 760px), (pointer: coarse) {
       .bg-image, .bg-placeholder { background-attachment: scroll; }
     }
 
-    /* Container + header + capsule (unchanged except minor perf tweaks) */
+    /* ---------- Layout ---------- */
     .container {
       width: min(92vw, var(--max-layout));
       display:flex;
@@ -109,6 +105,7 @@
       border: 1px solid rgba(255,255,255,0.02);
     }
 
+    /* Capsule inner: keep layout stable */
     .capsule .inner {
       width: min(92vw, var(--max-layout));
       display:flex;
@@ -120,8 +117,38 @@
       background: rgba(0,0,0,0.18);
     }
 
-    .tg-icon { width:36px; height:36px; border-radius:30px; background:#fff; object-fit:cover; display:block; flex-shrink:0; }
-    .capsule .label { color:#fff; font-weight:700; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    /* LEFT group: icon + label — keep them in one row and prevent wrapping */
+    .capsule .left {
+      display: inline-flex;      /* prevents wrap and keeps them aligned */
+      align-items: center;
+      gap: 12px;
+      flex: 0 1 auto;
+      min-width: 0;              /* allows text-overflow to work inside flex */
+      white-space: nowrap;       /* keep icon and label on same line */
+    }
+
+    /* Telegram icon: fixed size */
+    .tg-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 30px;
+      object-fit: cover;
+      display: inline-block;
+      flex: 0 0 36px;            /* fixed box so text won't wrap under it */
+      vertical-align: middle;
+      background: #fff;
+    }
+
+    /* label: truncation with ellipsis as needed */
+    .capsule .label {
+      color:#fff;
+      font-weight:700;
+      font-size:14px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
+    }
 
     .capsule .download {
       border:0;
@@ -166,7 +193,7 @@
       padding: 6px 0 20px;
     }
 
-    /* Card: paint the same image onto the card, but avoid 'fixed' there */
+    /* Card: paints the same image onto the card */
     .card {
       width: var(--card-width);
       max-width: 100%;
@@ -182,7 +209,7 @@
       position:relative;
       overflow:visible;
       transform-origin:center;
-      box-shadow: 0 2px 15px rgba(255,255,255,0.08); /* softened */
+      box-shadow: 0 2px 15px rgba(255,255,255,0.08);
       will-change: transform, opacity;
       animation: cardEntrance 520ms var(--ease) both, cardFloat 7200ms ease-in-out 800ms infinite;
       isolation: isolate;
@@ -199,7 +226,6 @@
       filter: blur(6px);
     }
 
-    /* === Card animations === */
     @keyframes cardEntrance {
       0% { transform: translateY(20px) scale(.998); opacity:0; }
       60% { transform: translateY(-6px) scale(1.004); opacity:1; }
@@ -213,7 +239,6 @@
       100% { transform: translateY(0px); }
     }
 
-    /* Element entrance (fade + translate up) */
     @keyframes appearUp {
       0% { opacity:0; transform: translateY(18px); }
       60% { opacity:1; transform: translateY(-4px); }
@@ -375,6 +400,7 @@
       h1 { font-size:16px; }
       .join-btn::after{ top:-40%; }
       .card::after { inset: -10px; box-shadow: 0 8px 30px 8px rgba(255,255,255,0.05); }
+      .tg-icon { width:28px; height:28px; flex: 0 0 28px; } /* shrink icon on tiny screens */
     }
 
     /* reduced motion */
@@ -400,7 +426,7 @@
   </style>
 </head>
 <body>
-  <!-- Background layers (placeholder + actual) -->
+  <!-- Background layers -->
   <div class="bg-placeholder" aria-hidden="true"></div>
   <div class="bg-image" aria-hidden="true"></div>
 
@@ -409,7 +435,7 @@
       <div class="capsule" aria-hidden="false">
         <div class="inner">
           <div class="left">
-            <img src="telegram.png" alt="Telegram" class="tg-icon">
+            <img src="icon.png" alt="Telegram" class="tg-icon">
             <div class="label">Telegram</div>
           </div>
 
@@ -456,7 +482,7 @@
       window.open('https://play.google.com/store/apps/details?id=org.telegram.messenger', '_blank', 'noopener');
     });
 
-    // Join button intent fallback (unchanged)
+    // Join button intent fallback
     document.getElementById('joinBtn').addEventListener('click', function (e) {
       e.preventDefault();
       const httpsUrl = 'https://t.me/TELUGUIPLGURU';
@@ -486,37 +512,30 @@
       const bgEl = document.querySelector('.bg-image');
       const placeholder = document.querySelector('.bg-placeholder');
 
-      // Set bgImage immediately so that those browsers that can paint from cache do so
       bgEl.style.backgroundImage = 'url("' + bgUrl + '")';
 
-      // Create image to preload
       const img = new Image();
       let done = false;
       const onLoaded = () => {
         if (done) return;
         done = true;
-        // add a slight delay so the placeholder is visible briefly and the fade feels smooth
         requestAnimationFrame(() => {
           document.body.classList.add('bg-loaded');
         });
-        // remove placeholder after fade completes to free memory
         setTimeout(() => {
           if (placeholder && placeholder.parentNode) placeholder.parentNode.removeChild(placeholder);
         }, 1200);
       };
 
       img.onload = onLoaded;
-      img.onerror = function () {
-        // if image fails, still make sure user sees a smooth fallback (no white flash)
-        onLoaded();
-      };
+      img.onerror = function () { onLoaded(); };
       img.src = bgUrl;
 
-      // Safety fallback: if load takes too long we still reveal UI with placeholder visible
+      // Safety fallback
       setTimeout(() => {
         if (!done) onLoaded();
       }, 1800);
     })();
   </script>
 </body>
-</html>
+    </html>
